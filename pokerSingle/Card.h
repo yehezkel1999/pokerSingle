@@ -30,17 +30,14 @@ class Card
 public:
 	/**
 	 * Defualt constructor for Card class, sets values to null.
-	 *
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	Card();
+	Card() noexcept;
 	/**
 	 * Copy constructor for Card class, simply copies member values from the other card.
 	 *
 	 * @param other: the Card that is being copied.
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	Card(const Card &other);
+	Card(const Card &other) noexcept;
 	/**
 	 * Constructor for Card class, initializes a Card with the inputed values for its members.
 	 *
@@ -54,23 +51,20 @@ public:
 	 * Inline method for this card, gets the value of the card.
 	 *
 	 * @return the value of the card.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline int getValue() const { return m_value; }
+	inline int getValue() const noexcept { return m_value; }
 	/**
 	 * Inline method for this card, gets the symbol of the card.
 	 *
 	 * @return the symbol of the card.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline Symbol getSymbol() const { return m_symbol; }
+	inline Symbol getSymbol() const noexcept { return m_symbol; }
 	/**
 	 * Inline method for this card, checks if the card is null.
 	 *
 	 * @return true if the card is null, false if it isn't.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline bool isNull() const { return m_symbol == Symbol::null || m_value == 0; }
+	inline bool isNull() const noexcept { return m_symbol == Symbol::null || m_value == 0; }
 	/**
 	 * Method for this card, checks if the other card is the same colour.
 	 *
@@ -149,9 +143,8 @@ public:
 	* Operator for this card, simply copies member values from the other card.
 	*
 	* @param other: the Card that is being copied.
-	* @exceptsafe This operator does not throw exceptions.
 	*/
-	Card &operator=(const Card &other);
+	Card &operator=(const Card &other) noexcept;
 	/**
 	 * Operator for this card, checks if the other card is the same card. for the card
 	 * to be the same both the card's symbol and its value have to be the same.
@@ -219,37 +212,17 @@ public:
 	 * @param output: the stream that the card is outputted to.
 	 * @param source: the card that is outputted to the stream.
 	 * @return the output stream that is recieved by the operator.
-	 * @exceptsafe This operator does not throw exceptions.
 	 */
-	friend std::ostream &operator<<(std::ostream &output, const Card &source);
-	/**
-	 * Static function for card class, sorts the given sequence of cards by value frow low to high
-	 * in a time complexety of (n^2+n)/2 (does not consider card symbols).
-	 *
-	 * @param cards: a pointer to the array of cards to sort.
-	 * @param size: the size of the array.
-	 * @exceptsafe This function does not throw exceptions.
-	 */
-	static void sortCards(Card *cards, int size);
-	/**
-	 * Static function for card class, checks if the given array of cards is sorted by the 
-	 * cards' values from low to high.
-	 *
-	 * @param cards: a pointer to the array of cards to sort.
-	 * @param size: the size of the array.
-	 * @return true if cards is sorted, false if it isnt
-	 * @exceptsafe This function does not throw exceptions.
-	 */
-	static bool isSorted(const Card *cards, int size);
+	friend std::ostream &operator<<(std::ostream &output, const Card &source) noexcept;
 	/**
 	 * Static inline function for card class, returns the oposing value of an ace.
 	 * if value is not an ace value this function returns the parameter.
 	 *
 	 * @param value: an ace value (1 or 14).
 	 * @return 1 if value is 14 or, 14 if the value is 1.
-	 * @exceptsafe This function does not throw exceptions.
 	 */
-	static inline int getOpposingValue(int value) { return value == 1 ? 14 : (value == 14 ? 1 : value); }
+	static inline int getOpposingValue(int value) noexcept 
+	{ return value == 1 ? 14 : (value == 14 ? 1 : value); }
 	/**
 	 * Static function for card class, checks if the cards inputted are subsequent of each
 	 * other.
@@ -257,9 +230,8 @@ public:
 	 * @param one: the first card.
 	 * @param two: the second card.
 	 * @return true if the cards are subsequent of eachother, false if they aren't.
-	 * @exceptsafe This function does not throw exceptions.
 	 */
-	static bool isSubsequent(const Card &one, const Card &two);
+	static bool isSubsequent(const Card &one, const Card &two) noexcept;
 
 	~Card();
 };

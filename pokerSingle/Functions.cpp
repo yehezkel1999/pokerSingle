@@ -1,7 +1,7 @@
 
 #include "Functions.h"
 
-std::ostream &commas(std::ostream &output, const unsigned int number) {
+std::ostream &func::commas(std::ostream &output, const unsigned int number) {
 	if (number == 0)
 		return output << number;
 
@@ -27,7 +27,7 @@ std::ostream &commas(std::ostream &output, const unsigned int number) {
 	}
 	return output;
 }
-std::ostream &commas(std::ostream &output, const int number) {
+std::ostream &func::commas(std::ostream &output, const int number) {
 	if (number == 0)
 		return output << number;
 

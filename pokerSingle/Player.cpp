@@ -33,28 +33,28 @@ void Player::reset(int m_baseRaise, int m_callAmount) {
 	m_bestHand->wipe();
 }
 
-bool Player::allIn() {
+void Player::allIn() {
 	int amount = m_latestDecision.getAmount();
 	if (amount != m_chips) {
 		m_latestDecision.changeDecision(Action::raise, m_latestDecision.getAmount());
 		raise();
-		return false;
+		return;
 	}
 	// check if it's a possible raise, if not then call/fold
 	if (amount <= m_callAmount) {
 		m_latestDecision.changeDecision(Action::call, m_callAmount);
 		call();
-		return false;
+		return;
 	}
-	// since takeChips subtracts the latest decision's previous amount
-	int newAmount = m_chips + m_latestDecision.getPreviousAmount();
-	m_latestDecision.changeDecision(Action::allIn, newAmount);
-	takeChips(newAmount);
-	return true;
+
+	takeChips(m_chips, true);
 }
-bool Player::raise() {
-	if (m_latestDecision.getAmount() == m_chips)
+void Player::raise() {
+	if (m_latestDecision.getAmount() >= m_chips) {
 		m_latestDecision.changeDecision(Action::allIn, m_chips);
+		allIn();
+		return;
+	}
 
 	// rounding the raise amount as you can only raise an amount that divides by the first 
 	// call's amount. e.g: m_callAmount=25, m_baseRaise=5, attemptedRaise=97 would be rounded 
@@ -63,24 +63,25 @@ bool Player::raise() {
 		+ m_callAmount;
 	if (amount > m_chips) { // cant use canCallAmount() here
 		m_latestDecision.changeDecision(Action::allIn, m_chips);
-		amount = m_chips;
+		allIn();
+		return;
 	}
 
 	// call method handles both < and == to m_callAmount
 	if (amount <= m_callAmount) {
 		m_latestDecision.changeDecision(Action::call, m_callAmount);
 		call();
-		return false;
+		return;
 	}
 
 	takeChips(amount);
-	return true;
 }
-bool Player::call() {
+void Player::call() {
 	int amount = m_latestDecision.getAmount();
 	if (amount > m_callAmount) {
 		m_latestDecision.changeDecision(Action::raise, amount);
-		return raise();
+		raise();
+		return;
 	}
 	if (amount < m_callAmount) {
 		m_latestDecision.changeDecision(Action::call, m_callAmount);
@@ -89,9 +90,9 @@ bool Player::call() {
 	if (amount > m_chips) { // cant use canCallAmount() here
 		m_latestDecision.changeDecision(Action::fold);
 		fold();
-		return false;
+		return;
 	}
-	return takeChips(amount); // will return true
+	takeChips(amount); // will return true
 }
 
 int Player::finalAction() {
@@ -102,12 +103,14 @@ int Player::finalAction() {
 	return m_chipsTaken;
 }
 
-bool Player::takeChips(int amount) {
-	m_chipsTaken = amount - m_latestDecision.getPreviousAmount();
+void Player::takeChips(int amount, bool allIn) {
+	// since all in simply places in the chips
+	m_chipsTaken = allIn ? amount : amount - m_latestDecision.getPreviousAmount();
+#if DEBUG
 	if (m_chipsTaken > m_chips)
-		return false;
+		throw std::logic_error("tried taking more chips than the player has");
+#endif
 	m_chips -= m_chipsTaken;
-	return m_chipsTaken;
 }
 
 Action Player::doAction() {
@@ -184,5 +187,4 @@ void Player::sortPlayers(Player *players, int size) {
 	}
 }
 
-Player::~Player() {
-}
+Player::~Player() {}

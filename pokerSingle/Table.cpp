@@ -3,6 +3,7 @@
 
 #include "HandAttempt.h"
 #include "Hand.h"
+#include "Functions.h"
 
 #include "Flags.h"
 
@@ -103,7 +104,7 @@ void Table::calculateHand(const Hand& hand, std::shared_ptr<HandAttempt> handAtt
 	cards[0] = hand.getFirstCard();	cards[1] = hand.getSecondCard();
 	for (int i = 2; i < size; i++)
 		cards[i] = m_table[i - 2];
-	Card::sortCards(cards, size);
+	func::sort(cards, size);
 
 	/**
 	 * This switch acts for cases 5, 6 and 7 as there can only be 5 cards open on the m_table

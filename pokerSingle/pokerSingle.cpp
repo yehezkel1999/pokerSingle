@@ -8,6 +8,7 @@
 #include "Bot.h"
 
 #include "Flags.h"
+#include "Functions.h"
 
 
 void testDeck() {
@@ -43,7 +44,7 @@ void testCalculations() {
 	cards[2] = Card(12, Symbol::diamond);
 	cards[3] = Card(11, Symbol::diamond);
 	cards[4] = Card(10, Symbol::diamond);
-	Card::sortCards(cards, SIZE);
+	func::sort(cards, SIZE);
 
 	HandAttempt h1(cards);
 	std::cout << h1 << std::endl << std::endl;
@@ -53,7 +54,7 @@ void testCalculations() {
 	cards[2] = Card(12, Symbol::diamond);
 	cards[3] = Card(11, Symbol::diamond);
 	cards[4] = Card(10, Symbol::diamond);
-	Card::sortCards(cards, SIZE);
+	func::sort(cards, SIZE);
 
 	HandAttempt h2(cards);
 	std::cout << h2 << std::endl << std::endl;

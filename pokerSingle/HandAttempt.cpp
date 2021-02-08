@@ -2,6 +2,7 @@
 #include "HandAttempt.h"
 
 #include "Flags.h"
+#include "Functions.h"
 
 HandAttempt::HandAttempt()
 	: m_cards(), m_handRank(HandRank::highCard), m_hashcode(0) {}
@@ -132,8 +133,8 @@ void HandAttempt::addHash(int amount, Relevance relevance) {
 }
 
 void HandAttempt::calcFiveCards() {
-	if (!Card::isSorted(m_cards, size)) // if it isn't sorted then sort it
-		Card::sortCards(m_cards, size);
+	if (!func::isSorted(m_cards, size)) // if it isn't sorted then sort it
+		func::sort(m_cards, size);
 
 	m_handRank = HandRank::highCard;
 	m_hashcode = 0;

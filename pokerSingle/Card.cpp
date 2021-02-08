@@ -3,9 +3,9 @@
 
 #include "CustomExceptions.h"
 
-Card::Card() 
+Card::Card() noexcept
 	: m_value(0), m_symbol(Symbol::null) {}
-Card::Card(const Card &other)
+Card::Card(const Card &other) noexcept
 	: m_value(other.m_value), m_symbol(other.m_symbol) {}
 Card::Card(int value, Symbol symbol) {
 #if DEBUG
@@ -130,7 +130,7 @@ int Card::operator-(int num) const {
 	return m_value - num;
 }
 
-Card &Card::operator=(const Card &other) {
+Card &Card::operator=(const Card &other) noexcept {
 	if (this == &other)
 		return *this;
 
@@ -160,7 +160,7 @@ bool Card::operator<(const Card &other) const {
 	return m_value == 1 ? false : other.m_value == 1 ? true : m_value < other.m_value;
 }
 
-std::ostream &operator<<(std::ostream &output, const Card &source) {
+std::ostream &operator<<(std::ostream &output, const Card &source) noexcept {
 #if DEBUG
 	if (source.isNull())
 		output << "nullptr";
@@ -169,27 +169,8 @@ std::ostream &operator<<(std::ostream &output, const Card &source) {
 		output << '(' << source.valueToString() << ',' << source.symbolToString() << ')';
 	return output;
 }
-void Card::sortCards(Card *cards, int size) {
-	Card temp;
-	for (int i = 1; i < size; i++) {
-		if (i == 0)
-			i++;
-		if (cards[i] < cards[i - 1]) {
-			temp = cards[i];
-			cards[i] = cards[i - 1];
-			cards[i - 1] = temp;
-			i-=2;
-		}
-	}
-}
-bool Card::isSorted(const Card *cards, int size) {
-	for (int i = 1; i < size; i++)
-		if (cards[i] < cards[i - 1])
-			return false;
-	return true;
-}
 
-bool Card::isSubsequent(const Card &one, const Card &two) {
+bool Card::isSubsequent(const Card &one, const Card &two) noexcept {
 	int first = one.m_value, second = two.m_value;
 	if (first == 1 && second == 13)
 		first = getOpposingValue(first);

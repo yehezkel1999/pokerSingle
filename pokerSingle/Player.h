@@ -36,9 +36,9 @@ class Player {
 	inline void smallBlind() { m_latestDecision.newDecision(Action::call, m_callAmount /= 2); }
 	inline void bigBlind() { m_latestDecision.newDecision(Action::call, m_callAmount); }
 
-	bool allIn();
-	bool raise();
-	bool call();
+	void allIn();
+	void raise();
+	void call();
 	inline void fold() { m_state = PlayerState::folded; }
 
 	int finalAction();
@@ -47,7 +47,7 @@ class Player {
 	inline void setCallAmount(int callAmount) { m_callAmount = callAmount; }
 	inline void addChips(int amount) { m_chips += amount; }
 	inline bool hadFinalAction() { return m_state == PlayerState::broke; }
-	bool takeChips(int amount);
+	void takeChips(int amount, bool allIn = false);
 
 	Action doAction();
 

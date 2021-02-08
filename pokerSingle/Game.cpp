@@ -255,12 +255,12 @@ void Game::postStageActions() {
 	else if (stage != Stage::river)
 		m_table.drawCardToTable(); // turn and river
 
+	m_potHandler.postStage();
+	resetDecisions();
+
 	*m_output << std::endl;
 	*m_output << m_potHandler << std::endl << std::endl;
 	*m_output << m_table << std::endl << std::endl;
-	resetDecisions();
-
-	m_potHandler.postStage();
 }
 void Game::resetDecisions() {
 	for (p_ptr &player : m_players)
