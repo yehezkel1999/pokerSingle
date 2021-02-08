@@ -169,7 +169,6 @@
     <ClCompile Include="Bot.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="ConsolePlayer.cpp" />
-    <ClCompile Include="CustomExceptions.cpp" />
     <ClCompile Include="Decision.cpp" />
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Functions.cpp" />

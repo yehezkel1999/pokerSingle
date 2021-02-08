@@ -8,7 +8,7 @@
 #include <fstream>
 
 
-Game::Game(int playerAmount, bool console) 
+Game::Game(size_type playerAmount, bool console) 
 	: m_output(nullptr), m_table(), m_matches(0), m_curBaseRaiseAmount(s_roundBuyIn),
 	m_curCallAmount(s_roundBuyIn), m_potHandler(), m_players(), m_folded(0),
 	m_broke(0) {
@@ -28,16 +28,16 @@ Game::Game(int playerAmount, bool console)
 	}
 	m_players.reserve(10); // the maximum amount of players allowed in a poker game
 
-	int place = random::randInt(0, playerAmount - 1);
+	size_type place = random::randInt(0, playerAmount - 1);
 
-	for (int i = 0; i < place; i++)
+	for (size_type i = 0; i < place; i++)
 		addBot(s_startingChips);
 	#if !JUST_BOTS
 	addConsolePlayer(s_startingChips);
 	#else
 	addBot(s_startingChips);
 	#endif
-	for (int i = 0; i < playerAmount - place - 1; i++)
+	for (size_type i = 0; i < playerAmount - place - 1; i++)
 		addBot(s_startingChips);
 
 	m_potHandler.create(m_output, m_players);
@@ -45,7 +45,7 @@ Game::Game(int playerAmount, bool console)
 	*m_output << std::endl << "*A new game is starting*" << std::endl;
 }
 
-const char *Game::chooseBotName(int id) {
+const char *Game::chooseBotName(size_type id) {
 	switch (id) {
 	case 0:
 		return "Bob";
@@ -70,13 +70,13 @@ const char *Game::chooseBotName(int id) {
 	}
 	return "null";
 }
-bool Game::addBot(int chips) {
+bool Game::addBot(chips_t chips) {
 	if (m_players.size() == m_players.capacity())
 		return false;
 	m_players.push_back(std::make_unique<Bot>(chips, chooseBotName(m_players.size()), &m_table));
 	return true;
 }
-bool Game::addConsolePlayer(int chips) {
+bool Game::addConsolePlayer(chips_t chips) {
 	if (m_players.size() == m_players.capacity())
 		return false;
 	m_players.push_back(std::make_unique<ConsolePlayer>(chips, &m_table));
@@ -142,7 +142,7 @@ bool Game::brokePlayer(p_it it) {
 
 	bool newPot = false;
 
-	size_t chips = it->get()->finalAction();
+	chips_t chips = it->get()->finalAction();
 	if (chips) {
 		if (it->get()->getLatestDecision().getAction() == Action::fold) {
 			m_folded++;
@@ -329,6 +329,8 @@ int Game::start() {
 
 	ultimateWinner();
 
+	*m_output << "*The game has ended*" << std::endl << std::endl;
+
 	return 0;
 }
 bool Game::checkChips() {
@@ -372,10 +374,4 @@ std::ostream &operator<<(std::ostream &output, const Game &source) {
 	output << source.m_potHandler << " | table: " << source.m_table << std::endl;
 	source.playersToStream(output);
 	return output;
-}
-
-Game::~Game() {
-	*m_output << "*The game has ended*" << std::endl << std::endl;
-	while (m_players.begin() != m_players.end())
-		m_players.erase(m_players.begin());
 }

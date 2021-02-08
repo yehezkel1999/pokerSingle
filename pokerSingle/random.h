@@ -13,7 +13,7 @@
  */
 class random {
 	random();
-	~random();
+	inline ~random() noexcept {}
 
 	inline static random &get() {
 		static random instance;

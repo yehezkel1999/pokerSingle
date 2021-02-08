@@ -6,7 +6,7 @@
 /**
  * Implamentation of a card symbol enum.
  * 
- * The int value of the enum is irrelevent, what matters is the actual symbol
+ * The actual value of the enum is irrelevent, what matters is the actual symbol
  * name in order to determine the symbol of the card.
  */
 enum class Symbol {
@@ -18,7 +18,7 @@ enum class Symbol {
  * 
  * A Card type consists of 2 members, the Card's symbol and its value.
  * The Card's symbol is an enum that has 5 values: club, heart, spade, diamond, null.
- * The Card's is an int that can range from 1-13 (including 1 and 13).
+ * The Card's value is an int that can range from 1-13 (including 1 and 13).
  * For a card to be null, the defualt constructor will have to be called,
  * its symbol would be null and its value would be 0. Cannot operate on a nulled Card!
  */
@@ -233,7 +233,7 @@ public:
 	 */
 	static bool isSubsequent(const Card &one, const Card &two) noexcept;
 
-	~Card();
+	inline ~Card() noexcept {}
 };
 
 #endif // !CARD_H_

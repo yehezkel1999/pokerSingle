@@ -4,12 +4,12 @@ ConsolePlayer::ConsolePlayer()
 	: Player() {}
 ConsolePlayer::ConsolePlayer(const ConsolePlayer &other)
 	: Player(other) {}
-ConsolePlayer::ConsolePlayer(int chips, const Table *table)
+ConsolePlayer::ConsolePlayer(chips_t chips, const Table *table)
 	: Player(chips, "The player", table) {}
 
 const Decision &ConsolePlayer::doTurn() {
-	int input;
-	int call = Player::getCallAmount();
+	chips_t input;
+	chips_t call = Player::getCallAmount();
 	std::cout << "Your cards: " << Player::getHand() << " | your chips: " << Player::getChips()
 		<< std::endl << "Input 0 to fold, 1 to call (" << call << "$), more to raise TO "
 		<< "(base raise is " << Player::getBaseRaise() << "$)" << std::endl
@@ -43,14 +43,11 @@ const Decision &ConsolePlayer::doTurn() {
 }
 
 const Decision &ConsolePlayer::notEnoughChips() {
-	int input;
+	chips_t input;
 	std::cout << "Your cards: " << Player::getHand() << " | your chips: " << Player::getChips()
 		<< std::endl << "You do not have enough chips to call, input 0 to fold or 1 to call "
 		"your remaining chips to stay in the hand" << std::endl;
 	std::cin >> input;
 	return input == 0 ? m_latestDecision.newDecision(Action::fold) :
 		m_latestDecision.newDecision(Action::raise, input);
-}
-
-ConsolePlayer::~ConsolePlayer() {
 }

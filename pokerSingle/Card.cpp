@@ -179,6 +179,3 @@ bool Card::isSubsequent(const Card &one, const Card &two) noexcept {
 
 	return first + 1 == second || second + 1 == first;
 }
-
-Card::~Card() {
-}

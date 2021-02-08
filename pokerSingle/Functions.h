@@ -2,6 +2,7 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
+#include "Flags.h"
 #include <iostream>
 
 /**
@@ -19,21 +20,8 @@ namespace func {
 	 * @param output: the output stream the number is outputted to.
 	 * @param number: the number that gets outputted with commas.
 	 * @return the output stream that is recieved by the function.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	std::ostream &commas(std::ostream &output, const unsigned int number);
-	/**
-	 * UNTESTED
-	 * 
-	 * Function commas, takes a const int and outputs it with a comma every three
-	 * digits to the given output stream (###,###,###).
-	 *
-	 * @param output: the output stream the number is outputted to.
-	 * @param number: the number that gets outputted with commas.
-	 * @return the output stream that is recieved by the function.
-	 * @exceptsafe This method does not throw exceptions.
-	 */
-	std::ostream &commas(std::ostream &output, const int number);
+	std::ostream &commas(std::ostream &output, const chips_t chips);
 
 	template<typename Base, typename T>
 	inline bool instanceof(const T *) {	return std::is_base_of<Base, T>::value; }

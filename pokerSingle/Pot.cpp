@@ -4,20 +4,20 @@
 #include "Flags.h"
 
 
-size_t Contributer::baseChange(size_t newBase) {
+chips_t Contributer::baseChange(chips_t newBase) {
 	_remainder = _amount > newBase ? _amount - newBase : 0;
 	if (_remainder)
 		_amount = newBase;
 	return _remainder;
 }
 
-size_t Pot::s_ids = 1;
+id_t Pot::s_ids = 1;
 
 Pot::Pot(const p_vec &players) : /* this constructor will always be called first */
 	m_id(s_ids), m_base(0), m_state(PotState::start), m_locker(), m_amount(0), m_eligible() {
 	s_ids = 1;
 
-	size_t count = 0;
+	chips_t count = 0;
 	for (const p_ptr &player : players)
 		if (!player->isFolded())
 			count++;
@@ -25,7 +25,7 @@ Pot::Pot(const p_vec &players) : /* this constructor will always be called first
 	if (count)
 		m_eligible.reserve(count);
 }
-Pot::Pot(const Pot &other, p_ptr player, PotState state, size_t amount) :
+Pot::Pot(const Pot &other, p_ptr player, PotState state, chips_t amount) :
 	m_id(++s_ids), m_base(0), m_state(state), m_locker(), m_amount(amount),
 	m_eligible() {
 	m_eligible.reserve(other.m_eligible.capacity() - 1);
@@ -41,7 +41,7 @@ Pot::Pot(const Pot &other, p_ptr player, PotState state, size_t amount) :
 		throw std::logic_error("empty pot");
 #endif
 
-	size_t max = 0;
+	chips_t max = 0;
 	for (Contributer &contributer : m_eligible) {
 		contributer._amount = contributer._remainder;
 		contributer._remainder = 0;
@@ -55,7 +55,7 @@ Pot::Pot(const Pot &other, p_ptr player, PotState state, size_t amount) :
 		m_locker = player;
 	}
 }
-Pot::Pot(const Pot &other, p_ptr player, size_t amount) :
+Pot::Pot(const Pot &other, p_ptr player, chips_t amount) :
 	m_id(++s_ids), m_base(0), m_state(PotState::start), m_locker(), m_amount(amount),
 	m_eligible() {
 	m_eligible.reserve(other.m_eligible.capacity() - 1);
@@ -98,7 +98,7 @@ void Pot::reset() {
 	m_amount = 0;
 	m_eligible.clear();
 }
-size_t Pot::setBase() {
+chips_t Pot::setBase() {
 	for (Contributer &contributer : m_eligible)
 		if (!contributer._player->isFolded())
 			return m_base = contributer._amount;
@@ -143,15 +143,15 @@ Pot::cc_it Pot::firstNonFolded() const {
 			return it;
 	return m_eligible.end();
 }
-size_t Pot::nonFolded() const {
-	size_t count = 0;
+chips_t Pot::nonFolded() const {
+	chips_t count = 0;
 	for (const Contributer &constributer : m_eligible)
 		if (!constributer._player->isFolded())
 			count++;
 	return count;
 }
 
-int Pot::addToPot(p_ptr adder, size_t amount) {
+schips_t Pot::addToPot(p_ptr adder, chips_t amount) {
 	if (m_state == PotState::finished)
 		return amount;
 
@@ -180,15 +180,15 @@ int Pot::addToPot(p_ptr adder, size_t amount) {
 	if (m_base > it->_amount + amount) // need to split *this* pot
 		return -1 * amount;
 
-	size_t contributed = it->contribute(m_base);
+	chips_t contributed = it->contribute(m_base);
 	m_amount += contributed;
 	return amount - contributed; // the remainder left from what was taken from the player's chips
 }
-void Pot::noCheckAdd(p_ptr adder, size_t amount) {
+void Pot::noCheckAdd(p_ptr adder, chips_t amount) {
 	getOrPush(adder)->_amount += amount;
 	m_amount += amount;
 }
-size_t Pot::lockPot(p_ptr locker, size_t amount) {
+chips_t Pot::lockPot(p_ptr locker, chips_t amount) {
 	m_locker = locker;
 	if (m_state != PotState::finished)
 		m_state = PotState::locked;
@@ -201,7 +201,7 @@ size_t Pot::lockPot(p_ptr locker, size_t amount) {
 
 	m_base = it->_amount;
 
-	size_t remainder, sum = 0;
+	chips_t remainder, sum = 0;
 	for (Contributer &contributer : m_eligible) {
 		remainder = contributer.baseChange(m_base);
 		m_amount -= remainder;
@@ -247,7 +247,7 @@ void Pot::calcWinner(std::ostream &output) {
 	declareWinner(output, *winner->_player);
 }
 bool Pot::oneNonFoldedLeft() const {
-	size_t count = 0;
+	chips_t count = 0;
 	for (const Contributer &constributer : m_eligible) {
 		if (!constributer._player->isFolded())
 			count++;
@@ -264,21 +264,21 @@ Player &Pot::oneLeft() {
 	throw std::logic_error("oneLeft method called but there were no players left");
 #endif
 }
-size_t Pot::winnerCount(const Player &winner) {
-	size_t count = 0;
+chips_t Pot::winnerCount(const Player &winner) {
+	chips_t count = 0;
 	for (Contributer &contributer : m_eligible)
 		if (contributer._player->getBestHand() == winner.getBestHand())
 			count++;
 	return count;
 }
 bool Pot::moreThanOneWinner(std::ostream &output, const Player &winner) {
-	size_t count = winnerCount(winner);
+	chips_t count = winnerCount(winner);
 
 	if (count < 2)
 		return false;
 
-	size_t amount = m_amount; // so when this pot is printed the amount will be intact
-	size_t winnings = (size_t) ((float) m_amount / (float) count);
+	chips_t amount = m_amount; // so when this pot is printed the amount will be intact
+	chips_t winnings = (chips_t) ((float) m_amount / (float) count);
 	output << "The winners of ";
 	potDeclareName(output) << " (" << winnings << "$ each) are: ";
 	for (Contributer &contributer : m_eligible)
@@ -338,7 +338,7 @@ std::ostream &operator<<(std::ostream &output, const Pot &source) {
 	source.potDeclareName(output) << ": ";
 	output << source.m_amount << "$ | {";
 
-	size_t count = source.nonFolded();
+	chips_t count = source.nonFolded();
 	if (!count)
 		return output << '}';
 
@@ -357,5 +357,3 @@ std::ostream &operator<<(std::ostream &output, const Pot &source) {
 #endif
 	return output;
 }
-
-Pot::~Pot() {}

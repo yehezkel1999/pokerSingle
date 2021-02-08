@@ -2,6 +2,7 @@
 #ifndef DECISION_H_
 #define DECISION_H_
 
+#include "Flags.h"
 #include <iostream>
 
 /**
@@ -26,57 +27,50 @@ enum class Action {
  */
 class Decision {
 	Action m_action; // the action the player decides to do.
-	int m_amount; // The amount this player will add to the pot, this turn.
-	int m_previousAmount; // The previous amount.
+	chips_t m_amount; // The amount this player will add to the pot, this turn.
+	chips_t m_previousAmount; // The previous amount.
 
-	const char *actionToString() const;
+	const char *actionToString() const noexcept;
 	// resets action to call and both amounts to 0.
-	inline void reset() { m_action = Action::call; m_amount = 0; m_previousAmount = 0; }
+	inline void reset() noexcept { m_action = Action::call; m_amount = 0; m_previousAmount = 0; }
 	// changes the decision manually (without changing previous amount)
-	inline void changeDecision(Action action) { m_action = action; }
+	inline void changeDecision(Action action) noexcept { m_action = action; }
 	// changes the decision manually (without changing previous amount)
-	inline void changeDecision(Action action, int amount) {
-		m_action = action; m_amount = amount;
-	}
+	inline void changeDecision(Action action, chips_t amount) noexcept
+	{ m_action = action; m_amount = amount; }
 public:
 	/**
 	 * Defualt constructor for Decision class, sets both amounts to 0 and action to fold.
-	 *
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	Decision();
+	Decision() noexcept;
 	/**
 	 * Copy constructor for Decision class, simply copies member values from the other
 	 * decision.
 	 *
 	 * @param other: the Decision that is being copied.
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	Decision(const Decision &other);
+	Decision(const Decision &other) noexcept;
 
 	/**
 	 * Inline method for this decision, gets the action that was decided.
 	 *
 	 * @return the action that was decided.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline Action getAction() const { return m_action; }
+	inline Action getAction() const noexcept { return m_action; }
 	/**
 	 * Inline method for this decision, gets the amount that was decided. If the action
 	 * that was decided was to fold then this has no meaning.
 	 *
 	 * @return the amount that was decided.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline int getAmount() const { return m_amount; }
+	inline chips_t getAmount() const noexcept { return m_amount; }
 	/**
 	 * Inline method for this decision, gets the previous amount that was decided. If the
 	 * action that was decided was to fold then this has no meaning.
 	 *
 	 * @return the previous amount that was decided.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline int getPreviousAmount() const { return m_previousAmount; }
+	inline chips_t getPreviousAmount() const noexcept { return m_previousAmount; }
 	/**
 	 * when making a new decision, the amount parameter isn't used for Action::fold.
 	 * When calling, call this function with the call-> (Action::call, callAmount), the
@@ -90,18 +84,16 @@ public:
 	 * @param action: the action you want to do this turn (fold, call, raise, all in).
 	 * @param amount: the amount of chips adjacent to your decision.
 	 * @returns the decision itself.
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	const Decision &newDecision(Action action, int amount = 0);
+	const Decision &newDecision(Action action, chips_t amount = 0) noexcept;
 
 	/**
 	 * Assignment operator for Decision class, simply copies member values from the other
 	 * decision.
 	 *
 	 * @param other: the Decision that is being copied.
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	Decision &Decision::operator=(const Decision &other);
+	Decision &Decision::operator=(const Decision &other) noexcept;
 
 	// player needs to use private methods since it needs to change decisions artificially 
 	// for security.
@@ -116,9 +108,10 @@ public:
 	 * @param output: the stream that the card is outputted to.
 	 * @param source: the decision that is outputted to the stream.
 	 * @return the output stream that is recieved by the operator.
-	 * @exceptsafe This operator does not throw exceptions.
 	 */
-	friend std::ostream &operator<<(std::ostream &output, const Decision &source);
+	friend std::ostream &operator<<(std::ostream &output, const Decision &source) noexcept;
+
+	inline ~Decision() noexcept {}
 };
 
 

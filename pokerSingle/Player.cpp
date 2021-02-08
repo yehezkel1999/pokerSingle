@@ -4,7 +4,7 @@
 
 #include "Flags.h"
 
-int Player::s_ids = 0;
+id_t Player::s_ids = 0;
 
 Player::Player()
 	: m_id(++s_ids), m_state(PlayerState::folded), m_hand(), m_chips(0), m_chipsTaken(0),
@@ -16,13 +16,13 @@ Player::Player(const Player &other)
 	m_callAmount(other.m_callAmount), m_baseRaise(other.m_baseRaise),
 	m_bestHand(std::make_shared<HandAttempt>(*other.m_bestHand)), m_table(other.m_table),
 	m_latestDecision(other.m_latestDecision), m_name(other.m_name) {}
-Player::Player(int m_chips, const char *m_name, const Table *m_table)
+Player::Player(chips_t m_chips, const char *m_name, const Table *m_table)
 	: m_id(++s_ids), m_state(PlayerState::folded), m_hand(), m_chips(m_chips),
 	m_chipsTaken(0), m_callAmount(0), m_baseRaise(0),
 	m_bestHand(std::make_shared<HandAttempt>()), m_table(m_table), m_latestDecision(),
 	m_name(m_name) {}
 
-void Player::reset(int m_baseRaise, int m_callAmount) {
+void Player::reset(chips_t m_baseRaise, chips_t m_callAmount) {
 	this->m_baseRaise = m_baseRaise;
 	this->m_callAmount = m_callAmount;
 	m_chipsTaken = 0;
@@ -34,7 +34,7 @@ void Player::reset(int m_baseRaise, int m_callAmount) {
 }
 
 void Player::allIn() {
-	int amount = m_latestDecision.getAmount();
+	chips_t amount = m_latestDecision.getAmount();
 	if (amount != m_chips) {
 		m_latestDecision.changeDecision(Action::raise, m_latestDecision.getAmount());
 		raise();
@@ -59,8 +59,8 @@ void Player::raise() {
 	// rounding the raise amount as you can only raise an amount that divides by the first 
 	// call's amount. e.g: m_callAmount=25, m_baseRaise=5, attemptedRaise=97 would be rounded 
 	// to 95
-	int amount = ((m_latestDecision.getAmount() - m_callAmount) / m_baseRaise) * m_baseRaise 
-		+ m_callAmount;
+	chips_t amount = ((m_latestDecision.getAmount() - m_callAmount) / m_baseRaise) * 
+		m_baseRaise	+ m_callAmount;
 	if (amount > m_chips) { // cant use canCallAmount() here
 		m_latestDecision.changeDecision(Action::allIn, m_chips);
 		allIn();
@@ -77,7 +77,7 @@ void Player::raise() {
 	takeChips(amount);
 }
 void Player::call() {
-	int amount = m_latestDecision.getAmount();
+	chips_t amount = m_latestDecision.getAmount();
 	if (amount > m_callAmount) {
 		m_latestDecision.changeDecision(Action::raise, amount);
 		raise();
@@ -95,7 +95,7 @@ void Player::call() {
 	takeChips(amount); // will return true
 }
 
-int Player::finalAction() {
+chips_t Player::finalAction() {
 	m_chipsTaken = m_chips;
 	m_chips = 0;
 	m_state = PlayerState::broke;
@@ -103,7 +103,7 @@ int Player::finalAction() {
 	return m_chipsTaken;
 }
 
-void Player::takeChips(int amount, bool allIn) {
+void Player::takeChips(chips_t amount, bool allIn) {
 	// since all in simply places in the chips
 	m_chipsTaken = allIn ? amount : amount - m_latestDecision.getPreviousAmount();
 #if DEBUG
@@ -173,9 +173,9 @@ std::ostream &operator<<(std::ostream &output, const Player &source) {
 	return output;
 }
 
-void Player::sortPlayers(Player *players, int size) {
+void Player::sortPlayers(Player *players, unsigned int size) {
 	Player *temp;
-	for (int i = 1; i < size; i++) {
+	for (unsigned int i = 1; i < size; i++) {
 		if (i == 0)
 			i++;
 		if (*players[i].m_bestHand < *players[i - 1].m_bestHand) {
@@ -186,5 +186,3 @@ void Player::sortPlayers(Player *players, int size) {
 		}
 	}
 }
-
-Player::~Player() {}

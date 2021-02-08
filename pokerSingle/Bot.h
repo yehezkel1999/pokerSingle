@@ -10,14 +10,14 @@
  * tuppled with the actual amount that will be raised.
  */
 struct Raise {
-	static int s_base; // this turn's base raise
+	static chips_t s_base; // this turn's base raise
 
-	int m_times; // how many baiseRaises to add to the current call amount
-	int m_amount; // the actual amount the bot raises to
+	chips_t m_times; // how many baiseRaises to add to the current call amount
+	chips_t m_amount; // the actual amount the bot raises to
 
 	inline Raise(int times = 0) : m_times(times), m_amount(s_base + s_base * times) {}
 	inline Raise(const Raise &other) : m_times(other.m_times), m_amount(other.m_amount) {}
-	inline ~Raise() {}
+	inline ~Raise() noexcept {}
 
 	inline bool operator==(const Raise &other) const { return m_times == other.m_times; }
 	inline bool operator!=(const Raise &other) const { return !(*this == other); }
@@ -35,7 +35,7 @@ struct Raise {
 
 
 class Bot : public Player {
-	int m_turns;
+	unsigned int m_turns;
 	Raise m_standards;
 
 	// @returns rais or call depending on who raised more
@@ -53,18 +53,18 @@ class Bot : public Player {
 	int rateHand();
 	const Decision &preFlop();
 public:
-	static int s_call; // this turn's call amount
+	static chips_t s_call; // this turn's call amount
 	
 	Bot();
 	Bot(const Bot &other);
-	Bot(int chips, const char *name, const Table *table);
+	Bot(chips_t chips, const char *name, const Table *table);
 
 	virtual const Decision &doTurn();
 	virtual const Decision &notEnoughChips();
 
 	virtual Bot &Bot::operator=(const Bot &other);
 
-	virtual ~Bot();
+	inline virtual ~Bot() noexcept {}
 };
 
 

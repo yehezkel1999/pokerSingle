@@ -82,7 +82,7 @@ public:
 	template <typename U>
 	friend std::ostream &operator<<(std::ostream &output, const sorted_vector &source);
 
-	~sorted_vector() {}
+	~sorted_vector() noexcept {}
 };
 
 template<typename T> inline
@@ -96,7 +96,7 @@ sorted_vector<T>::sorted_vector(sorted_vector &&other) : m_data(std::move(other.
 
 template<typename T> inline typename
 sorted_vector<T>::size_type sorted_vector<T>::move_right_until(const value_type &value) {
-	int i = size();
+	size_type i = size();
 	if (value < m_data[i - 1]) {
 		m_data.push_back(std::move(m_data[i - 1]));
 		i--;
@@ -129,7 +129,6 @@ sorted_vector<T>::iterator sorted_vector<T>::array_insert(value_type &&value) {
 template<typename T> inline typename
 sorted_vector<T>::size_type sorted_vector<T>::find(const value_type &value) {
 	size_type size = m_data.size();
-	int count = 0;
 
 	size_type inc = size / 2, it = inc, jump;
 	while (inc && it >= 0 && it < size) {
@@ -148,9 +147,7 @@ sorted_vector<T>::size_type sorted_vector<T>::find(const value_type &value) {
 			it -= inc == 1 ? 1 : jump;
 		}
 		inc /= 2;
-		count++;
 	}
-	std::cout << count << ' ';
 
 	if (it > size)
 		it = size;

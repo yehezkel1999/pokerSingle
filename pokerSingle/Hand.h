@@ -18,10 +18,8 @@ class Hand
 public:
 	/**
 	 * Default constructor for Hand class, creates 2 nulled cards. 
-	 *
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	Hand();
+	Hand() noexcept;
 	/**
 	 * Constructor for Hand class, recieves the two cards that the hand will consist of.
 	 * The actual call of this constructor will most likely consist of cards drawn from
@@ -29,16 +27,14 @@ public:
 	 * 
 	 * @param one: the first card of the hand.
 	 * @param two: the second card of the hand.
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	Hand(const Card &one, const Card &two);
+	Hand(const Card &one, const Card &two) noexcept;
 	/**
 	 * Copy constructor for Hand class, copies the cards from the other hand.
 	 *
 	 * @param other: the other hand.
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	Hand(const Hand &other);
+	Hand(const Hand &other) noexcept;
 
 	/**
 	 * Method for this hand, sets the cards of the hand, can only call this method if this 
@@ -51,33 +47,28 @@ public:
 	void drawHand(const Card &one, const Card &two);
 	/**
 	 * Method for this hand, clears the hand from cards.
-	 *
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	void clear();
+	void clear() noexcept;
 	/**
 	 * Inline method for this hand, gets the first card of the hand.
 	 *
 	 * @return the first card.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline const Card &getFirstCard() const { return m_one; }
+	inline const Card &getFirstCard() const noexcept { return m_one; }
 	/**
 	 * Inline method for this hand, gets the second card of the hand.
 	 *
 	 * @return the second card.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline const Card &getSecondCard() const { return m_two; }
+	inline const Card &getSecondCard() const noexcept { return m_two; }
 
 	/**
 	 * Operator for this card, copies the cards from the other hand.
 	 *
 	 * @param other: the hand that is being copied.
 	 * @return this hand.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	Hand &operator=(const Hand &other);
+	Hand &operator=(const Hand &other) noexcept;
 	/**
 	 * Operator for this card, checks if the other hand is equal to this hand. For this to
 	 * be true the cards in the hand have to be exactly the same.
@@ -105,11 +96,10 @@ public:
 	 * @param output: the stream that the hand is outputted to.
 	 * @param source: the hand that is outputted to the stream.
 	 * @return the output stream that is recieved by the operator.
-	 * @exceptsafe This operator does not throw exceptions.
 	 */
-	friend std::ostream &operator<<(std::ostream &output, const Hand &source);
+	friend std::ostream &operator<<(std::ostream &output, const Hand &source) noexcept;
 
-	~Hand();
+	inline ~Hand() noexcept {}
 };
 
 #endif // !HAND_H_

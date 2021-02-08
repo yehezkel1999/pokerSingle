@@ -8,7 +8,3 @@ random::random() { // will only be called once
 int random::iRandInt(int from, int to) {
 	return from + (rand() % (to - from + 1));
 }
-
-
-random::~random() {
-}

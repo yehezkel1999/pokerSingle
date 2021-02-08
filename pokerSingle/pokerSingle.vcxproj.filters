@@ -117,9 +117,6 @@
     <ClCompile Include="Table.cpp">
       <Filter>API\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CustomExceptions.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Functions.cpp">
       <Filter>Independent\Source Files</Filter>
     </ClCompile>

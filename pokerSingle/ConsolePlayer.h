@@ -9,12 +9,12 @@ class ConsolePlayer : public Player {
 public:
 	ConsolePlayer();
 	ConsolePlayer(const ConsolePlayer &other);
-	ConsolePlayer(int chips, const Table *table);
+	ConsolePlayer(chips_t chips, const Table *table);
 
 	virtual const Decision &doTurn();
 	virtual const Decision &notEnoughChips();
 
-	virtual ~ConsolePlayer();
+	inline virtual ~ConsolePlayer() noexcept {}
 };
 
 #endif // !CONSOLE_PLAYER_H_

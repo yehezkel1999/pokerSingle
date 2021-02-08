@@ -70,7 +70,7 @@ private: // member variables
 	 * @param remainder: the remainder from the previous pot to be transffered to the new 
 	 * pot.
 	 */
-	pot_it openNewPot(pot_it it, p_ptr locker, PotState state, size_t remainder);
+	pot_it openNewPot(pot_it it, p_ptr locker, PotState state, chips_t remainder);
 	 /**
 	  * opens a new pot depending on the last pot in m_pots with a staring contributer.
 	  *
@@ -78,7 +78,7 @@ private: // member variables
 	  * @param leftOver: the amount the player has left and will be contributed to the new 
 	  * pot.
 	  */
-	pot_it openNewPot(p_ptr player, size_t leftOver);
+	pot_it openNewPot(p_ptr player, chips_t leftOver);
 	/**
 	 * locks given pot, adds locker to pot if he is not there already, contributes given
 	 * amount to the pot and adds another pot if necessary. If the player went all in then 
@@ -89,7 +89,7 @@ private: // member variables
 	 * @param amount: the amount he has left.
 	 * @param allIn: a bool indicating whether the player went all in or not.
 	 */
-	bool lockPot(pot_it it, p_ptr locker, size_t amount, bool allIn = false);
+	bool lockPot(pot_it it, p_ptr locker, chips_t amount, bool allIn = false);
 public:
 
 	PotsHandler();
@@ -104,12 +104,12 @@ public:
 	void reset(const p_vec &players);
 	void postStage();
 
-	bool addToPots(p_ptr player, size_t amount, bool cantCall = false);
+	bool addToPots(p_ptr player, chips_t amount, bool cantCall = false);
 	void calcWinners(bool oneLeft);
 
 	friend std::ostream &operator<<(std::ostream &output, const PotsHandler &source);
 
-	~PotsHandler();
+	inline ~PotsHandler() noexcept {}
 };
 
 

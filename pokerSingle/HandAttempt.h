@@ -49,6 +49,11 @@ enum class HandRank {
  * the two pair being most relevant and the 3 being least relevant.
  */
 class HandAttempt {
+public:
+	using size_type = unsigned short;
+	using signed_size_type = signed short;
+
+private:
 	Card m_cards[5]; // The sequence of cards that is being calculated and ranked.
 
 	HandRank m_handRank; // The rank given to the hand attempt (the type of poker hand).
@@ -61,33 +66,31 @@ class HandAttempt {
 	void timesOfaKindHandle();
 	bool fullHouseSequence();
 	void fullHouseHandle();
-	int timesOfaKind();
+	size_type timesOfaKind();
 	bool straightSequence();
 	bool sameSymbolSequence();
 
-	void addHash(int amount, Relevance relevance);
-	inline void addHash(const Card &card, Relevance relevance) 
+	void addHash(unsigned int amount, Relevance relevance) noexcept;
+	inline void addHash(const Card &card, Relevance relevance) noexcept
 	{ addHash(Card::getOpposingValue(card.getValue()), relevance) ;}
 public:
-	static const int size = 5; // A hand attempt can only have 5 cards, no more no less.
+	// A hand attempt can only have 5 cards, no more no less (standard poker rules).
+	static const size_type s_size = 5;
 
 	/**
 	 * Defualt constructor for HandAttempt class, allocates 5 cards, but leaves the cells 
 	 * blank. The memory gets deleted when the object goes out of scope or deleted. all 
 	 * other values are set to their defualt state.
-	 *
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	HandAttempt();
+	HandAttempt() noexcept;
 	/**
 	 * Copy constructor for HandAttempt class, allocates 5 cards, and copies the values 
 	 * from other as well as for the other members. The memory gets deleted when the object 
 	 * goes out of scope or deleted.
 	 *
 	 * @parm other: the object being copied.
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	HandAttempt(const HandAttempt &other);
+	HandAttempt(const HandAttempt &other) noexcept;
 	/**
 	 * Constructor for HandAttempt class, allocates 5 cards, and copies the values from the 
 	 * inputed sequence of cards. The memory gets deleted when the object goes out of scope 
@@ -95,10 +98,9 @@ public:
 	 * you input an array of less than 5 cells then bad things will happen.
 	 *
 	 * @parm cards: the sequence of cards. CAN ONLY BE 5 CELLS!!!
-	 * @exceptsafe This constructor does not throw exceptions.
-	 * @throw bad things will happen if cards is less than 5 cells long.
+	 * @throws bad things will happen if cards is less than 5 cells long.
 	 */
-	HandAttempt(const Card *cards);
+	HandAttempt(const Card *cards) noexcept;
 
 	/**
 	 * Method for this HandAttempt, check if the five cards given are of any special hand 
@@ -110,42 +112,35 @@ public:
 	 * HandAttempt objects have the same hashcode, then they have the same card. 
 	 * The hashcode is determined by the type of poker hand (the better the bigger hashcode) 
 	 * and by the values of the cards (the bigger the values the bigger hashcode, ace being 
-	 * the biggest).  
-	 *
-	 * @exceptsafe This constructor does not throw exceptions.
+	 * the biggest).
 	 */
 	void calcFiveCards();
 	/**
 	 * Method for this HandAttempt, wipes out all data, allowing you to treat this object 
 	 * as if it was just constructed (with the same cards as before). Does not free memory.
-	 *
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	void wipe();
+	void wipe() noexcept;
 	/**
 	 * Method for this hand attempt, translate the hand's rank in poker to a c string type 
 	 * format.
 	 *
 	 * @return a null charcter termenated c string, describing the hand rank of the hand 
 	 * attempt.
-	 * @exceptsafe This constructor does not throw exceptions.
 	 */
-	const char *handRankToString() const;
+	const char *handRankToString() const noexcept;
 	/**
 	 * Inline method for this hand attempt, gets the hand rank in poker of the hand attempt. 
 	 *
 	 * @return the hand rank in poker of this hand attempt.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline HandRank getHandRank() const { return m_handRank; }
+	inline HandRank getHandRank() const noexcept { return m_handRank; }
 	/**
 	 * Inline method for this hand attempt, gets the hash code of this specific hand 
 	 * attempt. 
 	 *
 	 * @return the hash code of this hand attempt.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline int getHashCode() const { return m_hashcode; }
+	inline unsigned int getHashCode() const noexcept { return m_hashcode; }
 
 	/**
 	 * Inline operator for this hand attempt, checks if the other hand attempt has the same 
@@ -153,54 +148,48 @@ public:
 	 *
 	 * @param other: the HandAttempt that is being compared.
 	 * @return true if the other HandAttempt is the same, false if it isn't.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline bool operator==(const HandAttempt &other) const { return m_hashcode == other.m_hashcode; }
+	inline bool operator==(const HandAttempt &other) const noexcept { return m_hashcode == other.m_hashcode; }
 	/**
 	 * Inline operator for this hand attempt, checks if the other hand attempt has different 
 	 * cards.
 	 *
 	 * @param other: the HandAttempt that is being compared.
 	 * @return true if the other HandAttempt is different, false if it isn't.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline bool operator!=(const HandAttempt &other) const { return !(*this == other); }
+	inline bool operator!=(const HandAttempt &other) const noexcept { return !(*this == other); }
 	/**
 	 * Inline operator for this hand attempt, checks if the this hand attempt has worse
 	 * cards than the other (would lose in poker).
 	 *
 	 * @param other: the HandAttempt that is being compared.
 	 * @return true if the this HandAttempt is worse, false if it isn't.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline bool operator<(const HandAttempt &other) const { return m_hashcode < other.m_hashcode; }
+	inline bool operator<(const HandAttempt &other) const noexcept { return m_hashcode < other.m_hashcode; }
 	/**
 	 * Inline operator for this hand attempt, checks if the this hand attempt has better 
 	 * cards than the other (would win in poker).
 	 *
 	 * @param other: the HandAttempt that is being compared.
 	 * @return true if the this HandAttempt is better, false if it isn't.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline bool operator>(const HandAttempt &other) const { return other < *this; }
+	inline bool operator>(const HandAttempt &other) const noexcept { return other < *this; }
 	/**
 	 * Inline operator for this hand attempt, checks if the this hand attempt has worse,
 	 * or the same, cards than the other (would lose or tie in poker).
 	 *
 	 * @param other: the HandAttempt that is being compared.
 	 * @return true if the this HandAttempt is worse or the same, false if it isn't.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline bool operator<=(const HandAttempt &other) const { return !(other < *this); }
+	inline bool operator<=(const HandAttempt &other) const noexcept { return !(other < *this); }
 	/**
 	 * Inline operator for this hand attempt, checks if the this hand attempt has better,
 	 * or the same, cards than the other (would win or tie in poker).
 	 *
 	 * @param other: the HandAttempt that is being compared.
 	 * @return true if the this HandAttempt is better or the same, false if it isn't.
-	 * @exceptsafe This method does not throw exceptions.
 	 */
-	inline bool operator>=(const HandAttempt &other) const { return !(*this < other); }
+	inline bool operator>=(const HandAttempt &other) const noexcept { return !(*this < other); }
 
 	/**
 	 * Operator for this hand attempt, gives the card that is in the place of the given 
@@ -215,14 +204,13 @@ public:
 	 * @throw std::logic_error exception if this operator is called on an already calculated 
 	 * HandAttempt. 
 	 */
-	Card &operator[](int place);
+	Card &operator[](size_type place);
 	/**
 	* Operator for this hand attempt, simply copies member values from the other card.
 	*
 	* @param other: the HandAttempt that is being copied.
-	* @exceptsafe This operator does not throw exceptions.
 	*/
-	HandAttempt &operator=(const HandAttempt &other);
+	HandAttempt &operator=(const HandAttempt &other) noexcept;
 
 	/**
 	 * Overloaded operator << of std::ostream. Allows std::ostream to accept a HandAttempt 
@@ -236,11 +224,10 @@ public:
 	 * @param output: the stream that the hand attempt is outputted to.
 	 * @param source: the hand attempt that is outputted to the stream.
 	 * @return the output stream that is recieved by the operator.
-	 * @exceptsafe This operator does not throw exceptions.
 	 */
-	friend std::ostream &operator<<(std::ostream &output, const HandAttempt &source);
+	friend std::ostream &operator<<(std::ostream &output, const HandAttempt &source) noexcept;
 
-	~HandAttempt();
+	inline ~HandAttempt() noexcept {}
 };
 
 

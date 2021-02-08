@@ -30,7 +30,7 @@ void PotsHandler::postStage() {
 	}
 }
 
-PotsHandler::pot_it PotsHandler::openNewPot(pot_it it, p_ptr locker, PotState state, size_t remainder) {
+PotsHandler::pot_it PotsHandler::openNewPot(pot_it it, p_ptr locker, PotState state, chips_t remainder) {
 	// if it's locked then the new one will be locked, as well as have a base:
 	// [base] = [remainder] / [amount of players]
 	it = m_pots.push(Pot(*it, locker, state, remainder));
@@ -39,12 +39,12 @@ PotsHandler::pot_it PotsHandler::openNewPot(pot_it it, p_ptr locker, PotState st
 
 	return it;
 }
-PotsHandler::pot_it PotsHandler::openNewPot(p_ptr player, size_t leftOver) {
+PotsHandler::pot_it PotsHandler::openNewPot(p_ptr player, chips_t leftOver) {
 	pot_it it = m_pots.push(Pot(m_pots.back(), player, leftOver));
 	m_latest = &(*it);
 	return it;
 }
-bool PotsHandler::lockPot(pot_it it, p_ptr locker, size_t amount, bool allIn) {
+bool PotsHandler::lockPot(pot_it it, p_ptr locker, chips_t amount, bool allIn) {
 	/**
 	 * Player cannot call:
 	 *     1. change the current pot's base to the max amount this player can call plus the old 
@@ -61,7 +61,7 @@ bool PotsHandler::lockPot(pot_it it, p_ptr locker, size_t amount, bool allIn) {
 	bool opened = false;
 	PotState state = it->getState();
 	// so chips of folded players wouldn't get lost
-	size_t remainder = it->lockPot(locker, amount);
+	chips_t remainder = it->lockPot(locker, amount);
 
 	// save player as the reason a new pot was opened in case a new pot wont be opened 
 	// right now 
@@ -80,7 +80,7 @@ bool PotsHandler::lockPot(pot_it it, p_ptr locker, size_t amount, bool allIn) {
 	return opened;
 }
 
-bool PotsHandler::addToPots(p_ptr player, size_t amount, bool cantCall) {
+bool PotsHandler::addToPots(p_ptr player, chips_t amount, bool cantCall) {
 	if (!amount)
 		return false;
 
@@ -104,7 +104,7 @@ bool PotsHandler::addToPots(p_ptr player, size_t amount, bool cantCall) {
 			leftOver = it->addToPot(player, leftOver);
 
 		if (cantCall && leftOver < 0) // this means that this pot needs to be split
-			return lockPot(it, player, (size_t) (-1 * leftOver));
+			return lockPot(it, player, (chips_t) (-1 * leftOver));
 	}
 
 	// a player previously (not necessarily the previous player) called all his chips or 
@@ -133,5 +133,3 @@ std::ostream &operator<<(std::ostream &output, const PotsHandler &source) {
 		output << *it << std::endl;
 	return output << *it;
 }
-
-PotsHandler::~PotsHandler() {}

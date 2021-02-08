@@ -19,12 +19,12 @@ struct MemoryTracking {
 	std::uint32_t m_allocated;
 	std::uint32_t m_freed;
 
-	inline std::uint32_t current() { return m_allocated - m_freed; }
+	inline std::uint32_t current() noexcept { return m_allocated - m_freed; }
 
 	MemoryTracking(const MemoryTracking &) = delete;
 	MemoryTracking &operator=(const MemoryTracking &) = delete;
 
-	static inline MemoryTracking &get() {
+	static inline MemoryTracking &get() noexcept {
 		static MemoryTracking instance;
 		return instance;
 	}

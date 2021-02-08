@@ -25,23 +25,25 @@ class HandAttempt;
  * sequence of visible cards that are open on the table. Memory mannagment happens within 
  * the class so there is no reason to worry about that.
  */
-class Table
-{
+class Table {
+public:
+	using size_type = unsigned short;
+	using signed_size_type = signed short;
+
+private:
 	Deck m_deck; // a deck of cards, gets shuffled at the start of the game.
 	Card m_table[5]; // the cards in the game that are on the table (has up to 5 cards).
-	int m_curAmount; // the current amout of cards that are on the table.
+	size_type m_curAmount; // the current amout of cards that are on the table.
 
 	void calcSixCards(const Card *cards, std::shared_ptr<HandAttempt> handAttempt) const;
 	void calcSevenCards(const Card *cards, std::shared_ptr<HandAttempt> handAttempt) const;
 public:
-	static const int size = 5; // the maximum size of the table array that is in every object.
+	static const size_type s_size = 5; // the maximum size of the table array that is in every object.
 
 	/**
 	* Defualt constructor for Table class, allocates a memory of 5 cards. The memory gets deleted
 	* when the object goes out of scope or deleted. This constructor creates a new deck of cards
 	* and shuffles them.
-	*
-	* @exceptsafe This constructor does not throw exceptions.
 	*/
 	Table();
 
@@ -50,55 +52,45 @@ public:
 	* constructor was called.
 	*
 	* @returns the card drawn from the deck.
-	* @exceptsafe This method does not throw exceptions.
 	*/
-	void reset();
+	void reset() noexcept;
 	/**
 	* Method for this table class, draws the top card from the deck that is essentially on the 
 	* table and returns it.
 	*
 	* @returns the card drawn from the deck.
-	* @exceptsafe This method does not throw exceptions.
 	*/
-	const Card takeCardFromDeck();
+	const Card takeCardFromDeck() noexcept;
 	/**
 	* Method for this table class, draws cards (one by one) from the top of the deck to the 
 	* table till the table is full.
-	*
-	* @exceptsafe This method does not throw exceptions.
 	*/
-	void drawAllCardsToTable();
+	void drawAllCardsToTable() noexcept;
 	/**
 	* Method for this table class, draws the top card from the deck that is essentially on
 	* the table and places it openly on the table (places them in the sequence of cards that
 	* are open on the table).
-	*
-	* @exceptsafe This method does not throw exceptions.
 	*/
-	void drawCardToTable();
+	void drawCardToTable() noexcept;
 	/**
 	* Method for this table class, the first draw of every game, draws 3 cards from the top 
 	* of the deck that is essentially on the table and places them openly on the table 
 	* (places them in the sequence of cards that are open on the table).
-	*
-	* @exceptsafe This method does not throw exceptions.
 	*/
-	void firstDrawToTable();
+	void firstDrawToTable() noexcept;
 	/**
 	* Method for this table class, checks if there are open cards on the table
 	*
 	* @returns true if there are open cards on the table, false if there aren't.
-	* @exceptsafe This method does not throw exceptions.
 	*/
-	inline bool areCardsOnTable() const { return m_curAmount > 0; }
+	inline bool areCardsOnTable() const noexcept { return m_curAmount > 0; }
 	/**
 	* Method for this table class, checks the current stage of the poker match (depending 
 	* on how many cards are currently on the table).
 	*
 	* @returns the current stage.
-	* @exceptsafe This method does not throw exceptions.
 	*/
-	Stage currentStage() const;
+	Stage currentStage() const noexcept;
 	/**
 	* Method for this table class, gets the sequence of cards that are open on the table 
 	* and can be used by players for their hand attempt. This array's size is stored in 
@@ -106,9 +98,8 @@ public:
 	* can be checked by checking whether the card iterated is null or not.
 	*
 	* @returns a sequence of the cards that are open on the table.
-	* @exceptsafe This method does not throw exceptions.
 	*/
-	const Card *cardsOnTable() const;
+	const Card *cardsOnTable() const noexcept { return m_table; }
 	/**
 	 * Method for this Table, gives a inputed hand, the best possible set of 5 cards, the 
 	 * best HandAttempt, to win in a poker match, given the current cards that are open on 
@@ -137,11 +128,10 @@ public:
 	 * @param output: the stream that the hand attempt is outputted to.
 	 * @param source: the table that is outputted to the stream.
 	 * @return the output stream that is recieved by the operator.
-	 * @exceptsafe This operator does not throw exceptions.
 	 */
-	friend std::ostream &operator<<(std::ostream &output, const Table &source);
+	friend std::ostream &operator<<(std::ostream &output, const Table &source) noexcept;
 
-	~Table();
+	inline ~Table() noexcept {}
 };
 
 

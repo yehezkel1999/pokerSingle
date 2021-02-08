@@ -3,15 +3,15 @@
 #include "random.h"
 
 
-int Bot::s_call = 0;
-int Raise::s_base = 0;
+chips_t Bot::s_call = 0;
+chips_t Raise::s_base = 0;
 
 
 Bot::Bot()
 	: Player(), m_turns(0), m_standards() {}
 Bot::Bot(const Bot &other)
 	: Player(other), m_turns(other.m_turns), m_standards(other.m_standards) {}
-Bot::Bot(int chips, const char *name, const Table *table)
+Bot::Bot(chips_t chips, const char *name, const Table *table)
 	: Player(chips, name, table), m_turns(0), m_standards() {}
 
 
@@ -104,6 +104,7 @@ const Decision &Bot::doTurn() {
 
 	s_call = Player::getCallAmount();
 	Raise::s_base = Player::getBaseRaise();
+
 	// max m_amount of raises accounting for my chips
 	Raise max((Player::getChips() - s_call) / Raise::s_base);
 	const Stage stage = Player::getCurrentStage();
@@ -120,7 +121,9 @@ const Decision &Bot::doTurn() {
 	// post flop stages...
 	Player::checkHand();
 	const HandAttempt &best = Player::getBestHand();
-	Raise enemy((s_call - Raise::s_base) / Raise::s_base); // the enemy raise this turn
+
+	// the enemy raise this turn
+	Raise enemy(s_call ? (s_call - Raise::s_base) / Raise::s_base : 0); 
 
 	HandRank rank = best.getHandRank();
 
@@ -174,9 +177,6 @@ Bot &Bot::operator=(const Bot &other) {
 	m_standards = other.m_standards;
 
 	return *this;
-}
-
-Bot::~Bot() {
 }
 
 Raise &Raise::operator=(const Raise &other) {

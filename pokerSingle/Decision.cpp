@@ -1,13 +1,13 @@
 
 #include "Decision.h"
 
-Decision::Decision()
+Decision::Decision() noexcept
 	: m_action(Action::fold), m_amount(0), m_previousAmount(0) {}
-Decision::Decision(const Decision &other)
+Decision::Decision(const Decision &other) noexcept
 	: m_action(other.m_action), m_amount(other.m_amount),
 	m_previousAmount(other.m_previousAmount) {}
 
-const Decision &Decision::newDecision(Action action, int amount) {
+const Decision &Decision::newDecision(Action action, chips_t amount) noexcept {
 	m_action = action;
 
 	m_previousAmount = m_amount;
@@ -16,7 +16,7 @@ const Decision &Decision::newDecision(Action action, int amount) {
 	return *this;
 }
 
-const char *Decision::actionToString() const {
+const char *Decision::actionToString() const noexcept {
 	switch (m_action) {
 	case Action::fold:
 		return "folded";
@@ -29,7 +29,7 @@ const char *Decision::actionToString() const {
 	}
 	return nullptr;
 }
-Decision &Decision::operator=(const Decision &other) {
+Decision &Decision::operator=(const Decision &other) noexcept {
 	if (this == &other)
 		return *this;
 
@@ -39,7 +39,7 @@ Decision &Decision::operator=(const Decision &other) {
 
 	return *this;
 }
-std::ostream &operator<<(std::ostream &output, const Decision &source) {
+std::ostream &operator<<(std::ostream &output, const Decision &source) noexcept {
 	output << source.actionToString();
 	if (source.m_action == Action::raise)
 		output << ' ' << source.m_amount << '$';

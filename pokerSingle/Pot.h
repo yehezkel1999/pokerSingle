@@ -18,20 +18,20 @@ public:
 	using p_ptr = std::shared_ptr<Player>; // shared pointer to a Player.
 public:
 	p_ptr _player; // the player
-	size_t _amount; // the amount this player has contributed to this pot.
-	size_t _remainder; // the remainder from when the pot is locked
+	chips_t _amount; // the amount this player has contributed to this pot.
+	chips_t _remainder; // the remainder from when the pot is locked
 
-	Contributer(p_ptr player, size_t amount = 0) : _player(player), _amount(amount), _remainder(0) {}
+	Contributer(p_ptr player, chips_t amount = 0) : _player(player), _amount(amount), _remainder(0) {}
 
 	// changes this player's amount to the given base as he contributed the needed amount 
 	// and returns the amount he contributed.
 	// @param base: the amount this player needs to contribute to this pot.
 	// @returns how much this player needs to add to this pot.
-	inline size_t contribute(size_t base) { size_t rv = base - _amount; _amount = base; return rv; }
+	inline chips_t contribute(chips_t base) { chips_t rv = base - _amount; _amount = base; return rv; }
 
 	// @param newBase: the new base of this pot.
 	// @returns how much chips from this player needs to go to the new pot.
-	size_t baseChange(size_t newBase);
+	chips_t baseChange(chips_t newBase);
 };
 
 class Pot {
@@ -45,15 +45,15 @@ public: // 'using's
 	using cc_it = c_vec::const_iterator; // iterator for a vector of type const Contributer.
 
 private: // member variables
-	static size_t s_ids;
+	static id_t s_ids;
 
-	size_t m_id;
+	id_t m_id;
 
-	size_t m_base;
+	chips_t m_base;
 	PotState m_state; // indicates whether the baseAmount can be raised or not
 	p_ptr m_locker; // smart pointer to the player who locked the pot
 
-	size_t m_amount;
+	chips_t m_amount;
 	c_vec m_eligible;
 
 	/**
@@ -63,7 +63,7 @@ private: // member variables
 	inline void finished() { m_state = PotState::finished; }
 	void reset();
 	// call this at the end of every stage for an open pot
-	size_t setBase();
+	chips_t setBase();
 
 	/**
 	 * checks if the given player has already contributed to the pot, if he hasn't, the 
@@ -82,12 +82,12 @@ private: // member variables
 	 * over and is needed to be added to the next pot. When this pot needs to split it
 	 * returns -1.
 	 */
-	int addToPot(p_ptr adder, size_t amount);
+	schips_t addToPot(p_ptr adder, chips_t amount);
 	/**
 	 * adds the given amount to the pot WITHOUT checking anything. use this only when
 	 * splitting.
 	 */
-	void noCheckAdd(p_ptr adder, size_t amount);
+	void noCheckAdd(p_ptr adder, chips_t amount);
 	/**
 	 * Locks the pot. The pot's base will be the old base plus the locking player already
 	 * contributed amount plus the inputted amount.
@@ -97,12 +97,12 @@ private: // member variables
 	 * contributed amount, which that amount will be added to the base.
 	 * @returns the remaining amount from each player in the pot that exceeds the base.
 	 */
-	size_t lockPot(p_ptr locker, size_t amount);
+	chips_t lockPot(p_ptr locker, chips_t amount);
 
 	void calcWinner(std::ostream &output);
 	bool oneNonFoldedLeft() const;
 	Player &oneLeft();
-	size_t winnerCount(const Player &winner);
+	chips_t winnerCount(const Player &winner);
 	bool moreThanOneWinner(std::ostream &output, const Player &winner);
 	void declareWinner(std::ostream &output, Player &winner, bool oneNonFolded = false);
 	std::ostream &potDeclareName(std::ostream &output) const;
@@ -119,7 +119,7 @@ public:
 	 * @param state: the pot's state.
 	 * @param amount: the pot's starting amount.
 	 */
-	Pot(const Pot &other, p_ptr player, PotState state, size_t amount);
+	Pot(const Pot &other, p_ptr player, PotState state, chips_t amount);
 	/**
 	 * Constructor for this pot, constructs a pot with only one player, copies the inputted 
 	 * pot's capacity minus one.
@@ -128,7 +128,7 @@ public:
 	 * @param player: the player that won't be in this pot.
 	 * @param amount: the amount this player contributed to this pot.
 	 */
-	Pot(const Pot &other, p_ptr player, size_t amount);
+	Pot(const Pot &other, p_ptr player, chips_t amount);
 
 	Pot(Pot &&other) noexcept;
 	Pot &operator=(Pot &&other) noexcept;
@@ -140,8 +140,8 @@ public:
 	// @returns true if the pot is open for new betting, false otherwise.
 	inline bool isOpen() const { return isOpen(m_state); }
 	inline bool isFinished() const { return m_state == PotState::finished; }
-	inline size_t getAmount() const { return m_amount; }
-	inline size_t getSize() const { return m_eligible.size(); }
+	inline chips_t getAmount() const { return m_amount; }
+	inline chips_t getSize() const { return m_eligible.size(); }
 	bool isEligible(const Contributer &contributer) const;
 
 	const char *stateToString() const;
@@ -158,7 +158,7 @@ public:
 	// @returns a const iterator to the first non folded player that contributed to the pot.
 	// if there is non returns end().
 	cc_it firstNonFolded() const;
-	size_t nonFolded() const;
+	chips_t nonFolded() const;
 
 	/**
 	 * Operator for this pot, checks if the other pot has the same values. For the pots
@@ -218,7 +218,7 @@ public:
 	friend std::ostream &operator<<(std::ostream &output, const Pot &source);
 	inline static bool isOpen(PotState state) { return state == PotState::start || state == PotState::open; }
 
-	~Pot();
+	inline ~Pot() noexcept {}
 };
 
 
