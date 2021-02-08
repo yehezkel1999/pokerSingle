@@ -102,6 +102,7 @@ size_t Pot::setBase() {
 	for (Contributer &contributer : m_eligible)
 		if (!contributer._player->isFolded())
 			return m_base = contributer._amount;
+	return m_base = 0;
 }
 
 bool Pot::isEligible(const Contributer &contributer) const {
