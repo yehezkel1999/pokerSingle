@@ -10,8 +10,6 @@ Project:
     Each class is devided into a .h and a .cpp file. Currently, this project runs on the 
     console terminal and can either be played with console inputs or just with bots, where 
     you see them play until there is one winner left (you can control this in the flags file).
-    At the moment this project does not handle poker side pots (standard poker rules), but 
-    will in the future.
 
 Flags.h:
     This file includes flags for debbugging, in order to play a game of poker yourself 
