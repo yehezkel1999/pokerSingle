@@ -34,9 +34,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Card.h">
       <Filter>API\Header Files</Filter>
     </ClInclude>
