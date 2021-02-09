@@ -85,7 +85,7 @@ void Table::calcSevenCards(const Card *cards, std::shared_ptr<HandAttempt> handA
 			five.calcFiveCards();
 			if (five > max)
 				max = five;
-			count = 0; // resets count to rebuild five
+			count = 0; // resets count to rebuild five 
 			five.wipe(); // wipes it so [] operator won't throw an exception
 		}
 	*handAttempt = HandAttempt(max);
