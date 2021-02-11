@@ -1,7 +1,7 @@
 
 #include "Pot.h"
 
-#include "Flags.h"
+#include "../Flags.h"
 
 
 chips_t Contributer::baseChange(chips_t newBase) {

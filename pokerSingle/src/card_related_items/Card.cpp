@@ -1,7 +1,7 @@
 
 #include "Card.h"
 
-#include "CustomExceptions.h"
+#include "../tools/CustomExceptions.h"
 
 Card::Card() noexcept
 	: m_value(0), m_symbol(Symbol::null) {}

@@ -3,9 +3,9 @@
 
 #include "HandAttempt.h"
 #include "Hand.h"
-#include "Functions.h"
+#include "../tools/Functions.h"
 
-#include "Flags.h"
+#include "../Flags.h"
 
 Table::Table()
 	: m_deck(), m_table(), m_curAmount(0) {

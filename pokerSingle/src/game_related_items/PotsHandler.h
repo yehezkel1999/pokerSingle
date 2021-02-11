@@ -2,7 +2,7 @@
 #ifndef POTS_HANDLER_H_
 #define POTS_HANDLER_H_
 
-#include "sorted_vector.h"
+#include "../tools/sorted_vector.h"
 #include "Pot.h"
 
 /****************************************************************************************

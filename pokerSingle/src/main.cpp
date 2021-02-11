@@ -4,11 +4,9 @@
 
 #define SIZE 5
 
-#include "Game.h"
-#include "Bot.h"
-
-#include "Flags.h"
-#include "Functions.h"
+#include "game_related_items/Game.h"
+#include "tools/Functions.h"
+#include "players/Bot.h"
 
 
 void testDeck() {

@@ -3,7 +3,7 @@
 #define CUSTOM_EXCEPTIONS_H_
 
 #include <iostream>
-#include "Flags.h"
+#include "../Flags.h"
 
 #if DEBUG
 

@@ -5,137 +5,44 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="API">
-      <UniqueIdentifier>{ed88abca-da28-473a-a600-855e90ebb04e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="API\Header Files">
-      <UniqueIdentifier>{0326b8c5-cb32-4863-9ba5-9b71d3001e0f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="API\Source Files">
-      <UniqueIdentifier>{b7d6f5b1-79d2-4ab9-98e3-a55caea8eb7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Independent">
-      <UniqueIdentifier>{2be62a95-7a6b-42e8-9a0a-341d1db0dbf2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Independent\Header Files">
-      <UniqueIdentifier>{02a1993a-f92d-44e2-a70d-c42cf54405c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Independent\Source Files">
-      <UniqueIdentifier>{96eadcdc-617a-4d92-9d03-309748e65bba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Players">
-      <UniqueIdentifier>{7b8ad84b-b1e5-4528-aa09-c6e767502d08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Players\Header Files">
-      <UniqueIdentifier>{0291e6ea-50b4-4097-8d7c-8358c44ddaf3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Players\Source Files">
-      <UniqueIdentifier>{17685642-73c9-42f6-a2fe-4d21086f91eb}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Card.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Deck.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Decision.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hand.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HandAttempt.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomExceptions.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Flags.h">
-      <Filter>Independent\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Functions.h">
-      <Filter>Independent\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryTracking.h">
-      <Filter>Independent\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bot.h">
-      <Filter>Players\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsolePlayer.h">
-      <Filter>Players\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="random.h">
-      <Filter>Independent\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Table.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pot.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sorted_vector.h">
-      <Filter>Independent\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PotsHandler.h">
-      <Filter>API\Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="ConsolePlayer.h" />
+    <ClInclude Include="Bot.h" />
+    <ClInclude Include="Flags.h" />
+    <ClInclude Include="Functions.h" />
+    <ClInclude Include="MemoryTracking.h" />
+    <ClInclude Include="random.h" />
+    <ClInclude Include="sorted_vector.h" />
+    <ClInclude Include="Card.h" />
+    <ClInclude Include="CustomExceptions.h" />
+    <ClInclude Include="Decision.h" />
+    <ClInclude Include="Deck.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Hand.h" />
+    <ClInclude Include="HandAttempt.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Pot.h" />
+    <ClInclude Include="PotsHandler.h" />
+    <ClInclude Include="Table.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Card.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Decision.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Deck.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Hand.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HandAttempt.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Table.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Functions.cpp">
-      <Filter>Independent\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryTracking.cpp">
-      <Filter>Independent\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bot.cpp">
-      <Filter>Players\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsolePlayer.cpp">
-      <Filter>Players\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pokerSingle.cpp" />
-    <ClCompile Include="random.cpp">
-      <Filter>Independent\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Pot.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PotsHandler.cpp">
-      <Filter>API\Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="ConsolePlayer.cpp" />
+    <ClCompile Include="Bot.cpp" />
+    <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="MemoryTracking.cpp" />
+    <ClCompile Include="random.cpp" />
+    <ClCompile Include="Card.cpp" />
+    <ClCompile Include="Decision.cpp" />
+    <ClCompile Include="Deck.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Hand.cpp" />
+    <ClCompile Include="HandAttempt.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Pot.cpp" />
+    <ClCompile Include="PotsHandler.cpp" />
+    <ClCompile Include="Table.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pokerSingle.rc">

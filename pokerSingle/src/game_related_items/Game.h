@@ -4,11 +4,11 @@
 
 #define OUTPUT_FILE_NAME "log\\output.txt"
 
-#include "Flags.h"
+#include "../Flags.h"
 #include <vector>
 #include <memory>
 #include "Player.h"
-#include "Table.h"
+#include "../card_related_items/Table.h"
 #include "PotsHandler.h"
 
 

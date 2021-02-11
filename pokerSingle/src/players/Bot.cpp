@@ -1,6 +1,6 @@
 
 #include "Bot.h"
-#include "random.h"
+#include "../tools/random.h"
 
 
 chips_t Bot::s_call = 0;

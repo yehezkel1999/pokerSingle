@@ -1,10 +1,10 @@
 
 #include "Game.h"
 
-#include "Flags.h"
-#include "random.h"
-#include "Bot.h"
-#include "ConsolePlayer.h"
+#include "../Flags.h"
+#include "../tools/random.h"
+#include "../players/Bot.h"
+#include "../players/ConsolePlayer.h"
 #include <fstream>
 
 

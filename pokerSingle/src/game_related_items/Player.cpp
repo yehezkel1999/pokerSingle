@@ -1,8 +1,8 @@
 
 #include "Player.h"
-#include "Table.h"
+#include "../card_related_items/Table.h"
 
-#include "Flags.h"
+#include "../Flags.h"
 
 id_t Player::s_ids = 0;
 
