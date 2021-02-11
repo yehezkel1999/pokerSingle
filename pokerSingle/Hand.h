@@ -15,16 +15,16 @@ class Hand
 {
 	Card m_one; // the fist card.
 	Card m_two; // the second card.
-public:
+
 	/**
-	 * Default constructor for Hand class, creates 2 nulled cards. 
+	 * Default constructor for Hand class, creates 2 nulled cards.
 	 */
 	Hand() noexcept;
 	/**
 	 * Constructor for Hand class, recieves the two cards that the hand will consist of.
 	 * The actual call of this constructor will most likely consist of cards drawn from
 	 * a deck, NOT random cards that get created.
-	 * 
+	 *
 	 * @param one: the first card of the hand.
 	 * @param two: the second card of the hand.
 	 */
@@ -37,7 +37,15 @@ public:
 	Hand(const Hand &other) noexcept;
 
 	/**
-	 * Method for this hand, sets the cards of the hand, can only call this method if this 
+	 * Operator for this card, copies the cards from the other hand.
+	 *
+	 * @param other: the hand that is being copied.
+	 * @return this hand.
+	 */
+	Hand &operator=(const Hand &other) noexcept;
+
+	/**
+	 * Method for this hand, sets the cards of the hand, can only call this method if this
 	 * hand is empty (this object was constructed with the default constructor or cleared).
 	 *
 	 * @param one: the first card of the hand.
@@ -49,6 +57,9 @@ public:
 	 * Method for this hand, clears the hand from cards.
 	 */
 	void clear() noexcept;
+
+public:
+
 	/**
 	 * Inline method for this hand, gets the first card of the hand.
 	 *
@@ -62,13 +73,6 @@ public:
 	 */
 	inline const Card &getSecondCard() const noexcept { return m_two; }
 
-	/**
-	 * Operator for this card, copies the cards from the other hand.
-	 *
-	 * @param other: the hand that is being copied.
-	 * @return this hand.
-	 */
-	Hand &operator=(const Hand &other) noexcept;
 	/**
 	 * Operator for this card, checks if the other hand is equal to this hand. For this to
 	 * be true the cards in the hand have to be exactly the same.
@@ -98,6 +102,8 @@ public:
 	 * @return the output stream that is recieved by the operator.
 	 */
 	friend std::ostream &operator<<(std::ostream &output, const Hand &source) noexcept;
+
+	friend class Player;
 
 	inline ~Hand() noexcept {}
 };
