@@ -1,6 +1,7 @@
 
 #include "Player.h"
 #include "../card_related_items/Table.h"
+#include "../tools/Functions.h"
 
 #include "../Flags.h"
 
@@ -164,7 +165,7 @@ std::ostream &operator<<(std::ostream &output, const Player &source) {
 	if (source.isFolded())
 		output << " *folded* |";
 	output << " cards: " << source.m_hand << " | chips: ";
-	output << source.m_chips << '$' << std::endl << "player's best hand: ";
+	func::commas(output, source.m_chips) << '$' << std::endl << "player's best hand: ";
 	if (source.isFolded())
 		output << "*n/a*";
 	else

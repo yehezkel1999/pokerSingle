@@ -6,6 +6,7 @@
 
 #include "game_related_items/Game.h"
 #include "tools/Functions.h"
+#include "tools/random.h"
 #include "players/Bot.h"
 
 
@@ -141,15 +142,26 @@ void testGame() {
 	Game game(10);
 	game.start();
 }
+void testCommas() {
+	chips_t num = 0;
+	for (int i = 0; i < 100; i++) {
+		num += (chips_t) random::randInt(0, 3) * 1000000000;
+		num += (chips_t) random::randInt(0, 9) * 1000000;
+		num += (chips_t) random::randInt(0, 9) * 1000;
+		num += random::randInt(0, 9);
+		std::cout << "num: " << num << ", commas: ";
+		func::commas(std::cout, num) << std::endl;
+	}
+}
 
 int main() {
 	// testDeck();
 	// testCalculations();
 	// testTable();
-
-	testGame();
-
 	// testFixedHands();
+	// testCommas();
+	
+	testGame();
 
 	int x;
 	std::cin >> x; // for exe pause
