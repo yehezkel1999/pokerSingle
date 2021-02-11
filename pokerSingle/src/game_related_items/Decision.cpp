@@ -1,5 +1,6 @@
 
 #include "Decision.h"
+#include "../tools/Functions.h"
 
 Decision::Decision() noexcept
 	: m_action(Action::fold), m_amount(0), m_previousAmount(0) {}
@@ -41,9 +42,13 @@ Decision &Decision::operator=(const Decision &other) noexcept {
 }
 std::ostream &operator<<(std::ostream &output, const Decision &source) noexcept {
 	output << source.actionToString();
-	if (source.m_action == Action::raise)
-		output << ' ' << source.m_amount << '$';
-	if (source.m_action == Action::allIn || source.m_action == Action::call)
-		output << " (" << source.m_amount << "$)";
+	if (source.m_action == Action::raise) {
+		output << ' ';
+		func::commas(output, source.m_amount) << '$';
+	}
+	if (source.m_action == Action::allIn || source.m_action == Action::call){
+		output << " (";
+		func::commas(output, source.m_amount) << "$)";
+	}
 	return output;
 }

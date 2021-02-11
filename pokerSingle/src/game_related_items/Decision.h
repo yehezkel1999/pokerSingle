@@ -2,7 +2,7 @@
 #ifndef DECISION_H_
 #define DECISION_H_
 
-#include "Flags.h"
+#include "../Flags.h"
 #include <iostream>
 
 /**

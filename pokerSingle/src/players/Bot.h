@@ -2,7 +2,7 @@
 #ifndef BOT_H_
 #define BOT_H_
 
-#include "Player.h"
+#include "../game_related_items/Player.h"
 
 
 /**

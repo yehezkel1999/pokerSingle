@@ -1,6 +1,6 @@
 
 #include "Hand.h"
-#include "Flags.h"
+#include "../Flags.h"
 
 
 Hand::Hand() noexcept

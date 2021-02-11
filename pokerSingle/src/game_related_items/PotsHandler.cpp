@@ -1,5 +1,5 @@
 
-#include "Flags.h"
+#include "../Flags.h"
 #include "PotsHandler.h"
 
 PotsHandler::PotsHandler() : m_output(nullptr), m_pots(), m_latest(nullptr), m_reason() {

@@ -1,8 +1,8 @@
 
 #include "HandAttempt.h"
 
-#include "Flags.h"
-#include "Functions.h"
+#include "../Flags.h"
+#include "../tools/Functions.h"
 
 HandAttempt::HandAttempt() noexcept
 	: m_cards(), m_handRank(HandRank::highCard), m_hashcode(0) {}

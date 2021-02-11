@@ -1,10 +1,11 @@
 
 #include "Game.h"
 
-#include "Flags.h"
-#include "random.h"
-#include "Bot.h"
-#include "ConsolePlayer.h"
+#include "../Flags.h"
+#include "../tools/random.h"
+#include "../players/Bot.h"
+#include "../players/ConsolePlayer.h"
+#include "../tools/Functions.h"
 #include <fstream>
 
 
@@ -152,8 +153,9 @@ bool Game::brokePlayer(p_it it) {
 
 		newPot = m_potHandler.addToPots(*it, chips, true);
 
-		*m_output<< '*' << it->get()->getName() << " has insufficient funds and has"
-			" called his remainning chips (" << chips << "$)*" << std::endl << std::endl;
+		*m_output << '*' << it->get()->getName() << " has insufficient funds and has"
+			" called his remainning chips (";
+		func::commas(*m_output, chips) << "$)*" << std::endl << std::endl;
 	}
 	return newPot;
 }

@@ -1,7 +1,8 @@
 
 #include "Pot.h"
 
-#include "Flags.h"
+#include "../Flags.h"
+#include "../tools/Functions.h"
 
 
 chips_t Contributer::baseChange(chips_t newBase) {
@@ -280,7 +281,8 @@ bool Pot::moreThanOneWinner(std::ostream &output, const Player &winner) {
 	chips_t amount = m_amount; // so when this pot is printed the amount will be intact
 	chips_t winnings = (chips_t) ((float) m_amount / (float) count);
 	output << "The winners of ";
-	potDeclareName(output) << " (" << winnings << "$ each) are: ";
+	potDeclareName(output) << " (";
+	func::commas(output, winnings) << "$ each) are: ";
 	for (Contributer &contributer : m_eligible)
 		if (contributer._player->getBestHand() == winner.getBestHand()) {
 			output << contributer._player.get()->getName();
@@ -299,7 +301,8 @@ bool Pot::moreThanOneWinner(std::ostream &output, const Player &winner) {
 }
 void Pot::declareWinner(std::ostream &output, Player &winner, bool oneNonFolded) {
 	output << "The winner of ";
-	potDeclareName(output) << " is (wins " << m_amount;
+	potDeclareName(output) << " is (wins ";
+	func::commas(output, m_amount);
 	output << "$): ";
 	output << winner.getName();
 
@@ -336,7 +339,7 @@ std::ostream &Pot::potDeclareName(std::ostream &output) const {
 }
 std::ostream &operator<<(std::ostream &output, const Pot &source) {
 	source.potDeclareName(output) << ": ";
-	output << source.m_amount << "$ | {";
+	func::commas(output, source.m_amount) << "$ | {";
 
 	chips_t count = source.nonFolded();
 	if (!count)

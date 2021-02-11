@@ -2,12 +2,12 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#include "Flags.h"
+#include "../Flags.h"
 
-#include "Hand.h"
-#include "HandAttempt.h"
+#include "../card_related_items/Hand.h"
+#include "../card_related_items/HandAttempt.h"
 #include "Decision.h"
-#include "Table.h"
+#include "../card_related_items/Table.h"
 #include <string>
 #include <memory>
 

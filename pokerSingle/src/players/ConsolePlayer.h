@@ -2,7 +2,7 @@
 #ifndef CONSOLE_PLAYER_H_
 #define CONSOLE_PLAYER_H_
 
-#include "Player.h"
+#include "../game_related_items/Player.h"
 
 
 class ConsolePlayer : public Player {
