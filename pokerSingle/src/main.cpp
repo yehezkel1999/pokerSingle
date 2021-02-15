@@ -141,9 +141,10 @@ void testFixedHands() {
 void testGame() {
 	int players = 10;
 	bool bots = true;
-	int input;
 
 #if !DEBUG
+	int input;
+
 	std::cout << "Welcome to my poker tournament game." << std::endl;
 	std::cout << "Input 0 if you want to play or 1 if you want to watch bots play each other"
 		<< std::endl;
