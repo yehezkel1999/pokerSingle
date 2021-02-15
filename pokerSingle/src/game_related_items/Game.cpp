@@ -56,9 +56,9 @@ const char *Game::chooseBotName(size_type id) {
 	case 3:
 		return "Chad";
 	case 4:
-		return "Jessica";
-	case 5:
 		return "Todd";
+	case 5:
+		return "Jessica";
 	case 6:
 		return "Emma";
 	case 7:
@@ -73,7 +73,8 @@ const char *Game::chooseBotName(size_type id) {
 bool Game::addBot(chips_t chips) {
 	if (m_players.size() == m_players.capacity())
 		return false;
-	m_players.push_back(std::make_unique<Bot>(chips, chooseBotName(m_players.size()), &m_table));
+	m_players.push_back(std::make_unique<Bot>(chips, chooseBotName(m_players.size()),
+		m_players.size() < 5, &m_table));
 	return true;
 }
 bool Game::addConsolePlayer(chips_t chips) {
@@ -153,7 +154,7 @@ bool Game::brokePlayer(p_it it) {
 		newPot = m_potHandler.addToPots(*it, chips, true);
 
 		*m_output << '*' << it->get()->getName() << " has insufficient funds and has"
-			" called his remainning chips (";
+			" called " << it->get()->possessiveAdjective() << " remainning chips (";
 		func::commas(*m_output, chips) << "$)*" << std::endl << std::endl;
 	}
 	return newPot;

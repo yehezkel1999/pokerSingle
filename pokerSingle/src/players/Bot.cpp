@@ -7,12 +7,11 @@ chips_t Bot::s_call = 0;
 chips_t Raise::s_base = 0;
 
 
-Bot::Bot()
-	: Player(), m_turns(0), m_standards() {}
 Bot::Bot(const Bot &other)
-	: Player(other), m_turns(other.m_turns), m_standards(other.m_standards) {}
-Bot::Bot(chips_t chips, const char *name, const Table *table)
-	: Player(chips, name, table), m_turns(0), m_standards() {}
+	: Player(other), m_turns(other.m_turns), m_standards(other.m_standards), 
+	m_gender(other.m_gender) {}
+Bot::Bot(chips_t chips, const char *name, bool gender, const Table *table)
+	: Player(chips, name, table), m_turns(0), m_standards(), m_gender(gender) {}
 
 
 const Decision &Bot::raiseCall(const Raise &me, const Raise &enemy) {
@@ -165,6 +164,12 @@ const Decision &Bot::doTurn() {
 
 const Decision &Bot::notEnoughChips() {
 	return m_latestDecision.newDecision(Action::call, Player::getChips());
+}
+
+const char *Bot::possessiveAdjective() {
+	if (m_gender)
+		return "his";
+	return "her";
 }
 
 

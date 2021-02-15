@@ -7,10 +7,6 @@
 
 id_t Player::s_ids = 0;
 
-Player::Player()
-	: m_id(++s_ids), m_state(PlayerState::folded), m_hand(), m_chips(0), m_chipsTaken(0),
-	m_callAmount(0), m_baseRaise(0), m_bestHand(std::make_shared<HandAttempt>()),
-	m_table(nullptr), m_latestDecision(), m_name() {}
 Player::Player(const Player &other)
 	: m_id(other.m_id), m_state(PlayerState::folded), m_hand(other.m_hand), 
 	m_chips(other.m_chips), m_chipsTaken(other.m_chipsTaken),

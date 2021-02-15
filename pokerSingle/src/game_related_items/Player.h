@@ -61,7 +61,6 @@ protected:
 	std::string m_name;
 
 public:
-	Player();
 	Player(const Player &other);
 	Player(chips_t chips, const char *m_name, const Table *table);
 
@@ -101,6 +100,8 @@ public:
 	 * In this method a player can ONLY decide to either call all his chips or fold.
 	 */
 	virtual const Decision &notEnoughChips() = 0;
+
+	virtual const char *possessiveAdjective() = 0;
 
 	void checkHand();
 

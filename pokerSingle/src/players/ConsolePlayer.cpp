@@ -1,7 +1,5 @@
 #include "ConsolePlayer.h"
 
-ConsolePlayer::ConsolePlayer()
-	: Player() {}
 ConsolePlayer::ConsolePlayer(const ConsolePlayer &other)
 	: Player(other) {}
 ConsolePlayer::ConsolePlayer(chips_t chips, const Table *table)

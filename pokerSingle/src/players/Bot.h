@@ -38,6 +38,8 @@ class Bot : public Player {
 	unsigned int m_turns;
 	Raise m_standards;
 
+	bool m_gender;
+
 	// @returns rais or call depending on who raised more
 	const Decision &raiseCall(const Raise &me, const Raise &enemy);
 	// @returns the amount of base raises this bot should go up to this round
@@ -55,12 +57,12 @@ class Bot : public Player {
 public:
 	static chips_t s_call; // this turn's call amount
 	
-	Bot();
 	Bot(const Bot &other);
-	Bot(chips_t chips, const char *name, const Table *table);
+	Bot(chips_t chips, const char *name, bool gender, const Table *table);
 
 	virtual const Decision &doTurn();
 	virtual const Decision &notEnoughChips();
+	virtual const char *possessiveAdjective();
 
 	virtual Bot &Bot::operator=(const Bot &other);
 

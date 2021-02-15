@@ -63,7 +63,8 @@ void testCalculations() {
 void testTable() {
 	Table t;
 	int size = 10;
-	Player *players = new Bot[size];
+	Player *players;
+	// players = new Bot[size];
 
 	for (int i = 0; i < size; i++) {
 		// players[i].setTable(&t);
