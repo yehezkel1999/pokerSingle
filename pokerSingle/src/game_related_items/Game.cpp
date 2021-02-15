@@ -9,35 +9,34 @@
 #include <fstream>
 
 
-Game::Game(size_type playerAmount, bool console) 
+Game::Game(size_type playerAmount, bool onlyBots)
 	: m_output(nullptr), m_table(), m_matches(0), m_curBaseRaiseAmount(s_roundBuyIn),
 	m_curCallAmount(s_roundBuyIn), m_potHandler(), m_players(), m_folded(0),
 	m_broke(0) {
 
-	if (playerAmount > 10)
+	if (playerAmount < 2)
+		playerAmount = 2;
+	else if (playerAmount > 10)
 		playerAmount = 10;
 
-	if (console)
-		m_output = &std::cout;
-	else { // m_output to file
-		/*
-		m_output = new ofstream();
-		ofstream::open();
-		m_output->open(OUTPUT_FILE_NAME, std::ios::out | std::ios::app);
-		*m_output << "program started..." << std::endl << std::endl;
-		*/
-	}
+	m_output = &std::cout;
+
 	m_players.reserve(10); // the maximum amount of players allowed in a poker game
 
 	size_type place = random::randInt(0, playerAmount - 1);
 
 	for (size_type i = 0; i < place; i++)
 		addBot(s_startingChips);
-	#if !JUST_BOTS
+
+#if !DEBUG
+	if (onlyBots)
+		addBot(s_startingChips);
+#elif !JUST_BOTS
 	addConsolePlayer(s_startingChips);
-	#else
+#else
 	addBot(s_startingChips);
-	#endif
+#endif
+
 	for (size_type i = 0; i < playerAmount - place - 1; i++)
 		addBot(s_startingChips);
 
