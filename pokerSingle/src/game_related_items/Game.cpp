@@ -31,7 +31,7 @@ Game::Game(size_type playerAmount, bool onlyBots)
 #if !DEBUG
 	if (onlyBots)
 		addBot(s_startingChips);
-#elif !JUST_BOTS
+#elif !JUST_BOTS // DEBUG
 	addConsolePlayer(s_startingChips);
 #else
 	addBot(s_startingChips);
