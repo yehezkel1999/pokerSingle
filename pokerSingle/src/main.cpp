@@ -63,7 +63,8 @@ void testCalculations() {
 void testTable() {
 	Table t;
 	int size = 10;
-	Player *players = new Bot[size];
+	Player *players;
+	// players = new Bot[size];
 
 	for (int i = 0; i < size; i++) {
 		// players[i].setTable(&t);
@@ -139,7 +140,35 @@ void testFixedHands() {
 
 
 void testGame() {
-	Game game(10);
+	int players = 10;
+	bool bots = true;
+
+#if !DEBUG
+	int input;
+
+	std::cout << "Welcome to my poker tournament game." << std::endl;
+	std::cout << "Input 0 if you want to play or 1 if you want to watch bots play each other"
+		<< std::endl;
+	std::cin >> input;
+	while (input < 0 || input > 1) {
+		std::cout << "Invalid input, enter 0 if you want to play or 1 if you want to watch"
+			" bots play each other " << std::endl;
+		std::cin >> input;
+	}
+	bots = input;
+
+	std::cout << "Input the total amount of players you want to be included in the game"
+		" (2 - 10)"	<< std::endl;
+	std::cin >> input;
+	while (input < 2 || input > 10) {
+		std::cout << "Invalid input, there can only be a minimum of 2 players and a maximum"
+			" 10 players" << std::endl;
+		std::cin >> input;
+	}
+	players = input;
+#endif
+
+	Game game(players, bots);
 	game.start();
 }
 void testCommas() {

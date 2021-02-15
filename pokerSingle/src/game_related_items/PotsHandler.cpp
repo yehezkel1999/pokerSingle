@@ -95,8 +95,11 @@ bool PotsHandler::addToPots(p_ptr player, chips_t amount, bool cantCall) {
 
 		// player called all his chips / went all in: need to lock the pot, but not open 
 		// a new pot
-		if (allIn && it == m_pots.end() - 1)
+		if (allIn && it == m_pots.end() - 1) {
+			if (!it->isOpen()) // if it's allready locked then a new pot is needed
+				openNewPot(player, 0);
 			return lockPot(m_pots.end() - 1, player, leftOver, true);
+		}
 
 		if (cantCall && it == m_pots.end() - 1) // cant call && last iteration
 			leftOver *= -1;

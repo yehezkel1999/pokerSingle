@@ -73,8 +73,15 @@ private: // private methods
 	std::ostream &newPotToStream() const;
 
 public: // public methods
-
-	Game(size_type playerAmount = 0, bool console = true);
+	/**
+	 * Game constructor, 
+	 * 
+	 * @param playerAmount: the amount of players that will be in the game, minimum 2, 
+	 * maximum 10.
+	 * @param onlyBots: input true if you want only bots to be includded in the game, 
+	 * false if you want to have a console player to be included.
+	 */
+	Game(size_type playerAmount = 0, bool onlyBots = true);
 	Game(const Game &) = delete;
 	Game &operator=(const Game &) = delete;
 

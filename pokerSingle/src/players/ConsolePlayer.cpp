@@ -1,7 +1,5 @@
 #include "ConsolePlayer.h"
 
-ConsolePlayer::ConsolePlayer()
-	: Player() {}
 ConsolePlayer::ConsolePlayer(const ConsolePlayer &other)
 	: Player(other) {}
 ConsolePlayer::ConsolePlayer(chips_t chips, const Table *table)
@@ -13,9 +11,9 @@ const Decision &ConsolePlayer::doTurn() {
 	std::cout << "Your cards: " << Player::getHand() << " | your chips: " << Player::getChips()
 		<< std::endl << "Input 0 to fold, 1 to call (" << call << "$), more to raise TO "
 		<< "(base raise is " << Player::getBaseRaise() << "$)" << std::endl
-		<< "In order to raise, input an amount that is the *call amount* plus *the base "
-		"raise time n*" << std::endl << "your best hand: " << Player::getBestHand() 
-		<< std::endl;
+		<< "In order to raise, input an amount that is " << call << "$ plus "
+		<< Player::getBaseRaise() << "$ time n*" << std::endl << "your best hand: "
+		<< Player::getBestHand() << std::endl;
 	std::cin >> input;
 
 	while (true) {
@@ -37,6 +35,7 @@ const Decision &ConsolePlayer::doTurn() {
 		else
 			return m_latestDecision.newDecision(Action::raise, input);
 
+		std::cout << std::endl;
 		std::cin >> input;
 	}
 	return m_latestDecision.newDecision(Action::fold); // just fo return paths..

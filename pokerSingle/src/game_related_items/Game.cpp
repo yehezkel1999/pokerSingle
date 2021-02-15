@@ -9,35 +9,34 @@
 #include <fstream>
 
 
-Game::Game(size_type playerAmount, bool console) 
+Game::Game(size_type playerAmount, bool onlyBots)
 	: m_output(nullptr), m_table(), m_matches(0), m_curBaseRaiseAmount(s_roundBuyIn),
 	m_curCallAmount(s_roundBuyIn), m_potHandler(), m_players(), m_folded(0),
 	m_broke(0) {
 
-	if (playerAmount > 10)
+	if (playerAmount < 2)
+		playerAmount = 2;
+	else if (playerAmount > 10)
 		playerAmount = 10;
 
-	if (console)
-		m_output = &std::cout;
-	else { // m_output to file
-		/*
-		m_output = new ofstream();
-		ofstream::open();
-		m_output->open(OUTPUT_FILE_NAME, std::ios::out | std::ios::app);
-		*m_output << "program started..." << std::endl << std::endl;
-		*/
-	}
+	m_output = &std::cout;
+
 	m_players.reserve(10); // the maximum amount of players allowed in a poker game
 
 	size_type place = random::randInt(0, playerAmount - 1);
 
 	for (size_type i = 0; i < place; i++)
 		addBot(s_startingChips);
-	#if !JUST_BOTS
+
+#if !DEBUG
+	if (onlyBots)
+		addBot(s_startingChips);
+#elif !JUST_BOTS // DEBUG
 	addConsolePlayer(s_startingChips);
-	#else
+#else
 	addBot(s_startingChips);
-	#endif
+#endif
+
 	for (size_type i = 0; i < playerAmount - place - 1; i++)
 		addBot(s_startingChips);
 
@@ -57,9 +56,9 @@ const char *Game::chooseBotName(size_type id) {
 	case 3:
 		return "Chad";
 	case 4:
-		return "Jessica";
-	case 5:
 		return "Todd";
+	case 5:
+		return "Jessica";
 	case 6:
 		return "Emma";
 	case 7:
@@ -74,7 +73,8 @@ const char *Game::chooseBotName(size_type id) {
 bool Game::addBot(chips_t chips) {
 	if (m_players.size() == m_players.capacity())
 		return false;
-	m_players.push_back(std::make_unique<Bot>(chips, chooseBotName(m_players.size()), &m_table));
+	m_players.push_back(std::make_unique<Bot>(chips, chooseBotName(m_players.size()),
+		m_players.size() < 5, &m_table));
 	return true;
 }
 bool Game::addConsolePlayer(chips_t chips) {
@@ -154,7 +154,7 @@ bool Game::brokePlayer(p_it it) {
 		newPot = m_potHandler.addToPots(*it, chips, true);
 
 		*m_output << '*' << it->get()->getName() << " has insufficient funds and has"
-			" called his remainning chips (";
+			" called " << it->get()->possessiveAdjective() << " remainning chips (";
 		func::commas(*m_output, chips) << "$)*" << std::endl << std::endl;
 	}
 	return newPot;
