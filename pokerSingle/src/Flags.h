@@ -8,7 +8,7 @@
 #define DEBUG 0
 #endif // _DEBUG
 
-#define JUST_BOTS 1
+#define JUST_BOTS 0
 #define MEMORY_FLAG 0
 
 #if MEMORY_FLAG

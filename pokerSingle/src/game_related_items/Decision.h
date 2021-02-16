@@ -71,6 +71,7 @@ public:
 	 * @return the previous amount that was decided.
 	 */
 	inline chips_t getPreviousAmount() const noexcept { return m_previousAmount; }
+	chips_t difference() const;
 	/**
 	 * when making a new decision, the amount parameter isn't used for Action::fold.
 	 * When calling, call this function with the call-> (Action::call, callAmount), the
