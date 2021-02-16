@@ -8,6 +8,14 @@ Decision::Decision(const Decision &other) noexcept
 	: m_action(other.m_action), m_amount(other.m_amount),
 	m_previousAmount(other.m_previousAmount) {}
 
+chips_t Decision::difference() const {
+#if DEBUG
+	if (m_action != Action::fold && m_amount < m_previousAmount)
+		throw std::logic_error("current decision amount cannot be smaller than previous amount");
+#endif
+	return m_amount - m_previousAmount;
+}
+
 const Decision &Decision::newDecision(Action action, chips_t amount) noexcept {
 	m_action = action;
 
@@ -41,6 +49,8 @@ Decision &Decision::operator=(const Decision &other) noexcept {
 	return *this;
 }
 std::ostream &operator<<(std::ostream &output, const Decision &source) noexcept {
+	if (source.m_action == Action::call && !source.difference())
+		return output << "checked";
 	output << source.actionToString();
 	if (source.m_action == Action::raise) {
 		output << ' ';

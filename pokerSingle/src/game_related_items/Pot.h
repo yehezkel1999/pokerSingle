@@ -51,7 +51,7 @@ private: // member variables
 
 	chips_t m_base;
 	PotState m_state; // indicates whether the baseAmount can be raised or not
-	p_ptr m_locker; // smart pointer to the player who locked the pot
+	p_ptr m_reason; // smart pointer to the player who is the reason for this pot's existance.
 
 	chips_t m_amount;
 	c_vec m_eligible;
@@ -127,8 +127,9 @@ public:
 	 * @param other: the last active pot.
 	 * @param player: the player that won't be in this pot.
 	 * @param amount: the amount this player contributed to this pot.
+	 * @param reason: the player that because of him this pot was opened.
 	 */
-	Pot(const Pot &other, p_ptr player, chips_t amount);
+	Pot(const Pot &other, p_ptr player, chips_t amount, p_ptr reason);
 
 	Pot(Pot &&other) noexcept;
 	Pot &operator=(Pot &&other) noexcept;
@@ -142,6 +143,7 @@ public:
 	inline bool isFinished() const { return m_state == PotState::finished; }
 	inline chips_t getAmount() const { return m_amount; }
 	inline chips_t getSize() const { return m_eligible.size(); }
+	inline const Player &getReason() const { return *m_reason; }
 	bool isEligible(const Contributer &contributer) const;
 
 	const char *stateToString() const;

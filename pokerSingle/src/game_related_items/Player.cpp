@@ -8,11 +8,25 @@
 id_t Player::s_ids = 0;
 
 Player::Player(const Player &other)
-	: m_id(other.m_id), m_state(PlayerState::folded), m_hand(other.m_hand), 
+	: m_id(other.m_id), m_state(other.m_state), m_hand(other.m_hand), 
 	m_chips(other.m_chips), m_chipsTaken(other.m_chipsTaken),
 	m_callAmount(other.m_callAmount), m_baseRaise(other.m_baseRaise),
 	m_bestHand(std::make_shared<HandAttempt>(*other.m_bestHand)), m_table(other.m_table),
 	m_latestDecision(other.m_latestDecision), m_name(other.m_name) {}
+Player::Player(Player &&other) noexcept
+	: m_id(other.m_id), m_state(other.m_state), m_hand(std::move(other.m_hand)),
+	m_chips(other.m_chips), m_chipsTaken(other.m_chipsTaken),
+	m_callAmount(other.m_callAmount), m_baseRaise(other.m_baseRaise),
+	m_bestHand(std::move(other.m_bestHand)), m_table(other.m_table),
+	m_latestDecision(std::move(other.m_latestDecision)), m_name(std::move(other.m_name)) {
+	other.m_id = 0;
+	other.m_state = PlayerState::broke;
+	other.m_chips = 0;
+	other.m_chipsTaken = 0;
+	other.m_callAmount = 0;
+	other.m_baseRaise = 0;
+	other.m_table = nullptr;
+}
 Player::Player(chips_t m_chips, const char *m_name, const Table *m_table)
 	: m_id(++s_ids), m_state(PlayerState::folded), m_hand(), m_chips(m_chips),
 	m_chipsTaken(0), m_callAmount(0), m_baseRaise(0),
@@ -152,6 +166,33 @@ Player &Player::operator=(const Player &other) {
 
 	m_latestDecision = other.m_latestDecision;
 	m_name = other.m_name;
+
+	return *this;
+}
+
+Player &Player::operator=(Player &&other) noexcept {
+	if (this == &other)
+		return *this;
+
+	m_id = other.m_id;
+	m_state = other.m_state;
+	m_hand = std::move(other.m_hand);
+	m_chips = other.m_chips;
+	m_chipsTaken = other.m_chipsTaken;
+	m_callAmount = other.m_callAmount;
+	m_baseRaise = other.m_baseRaise;
+	m_bestHand = std::move(other.m_bestHand);
+	m_table = other.m_table;
+	m_latestDecision = std::move(other.m_latestDecision);
+	m_name = std::move(other.m_name);
+
+	other.m_id = 0;
+	other.m_state = PlayerState::broke;
+	other.m_chips = 0;
+	other.m_chipsTaken = 0;
+	other.m_callAmount = 0;
+	other.m_baseRaise = 0;
+	other.m_table = nullptr;
 
 	return *this;
 }

@@ -56,15 +56,17 @@ class Bot : public Player {
 	const Decision &preFlop();
 public:
 	static chips_t s_call; // this turn's call amount
-	
+
 	Bot(const Bot &other);
+	Bot(Bot &&other) noexcept;
 	Bot(chips_t chips, const char *name, bool gender, const Table *table);
 
 	virtual const Decision &doTurn();
 	virtual const Decision &notEnoughChips();
 	virtual const char *possessiveAdjective();
 
-	virtual Bot &Bot::operator=(const Bot &other);
+	virtual Bot &operator=(const Bot &other);
+	virtual Bot &operator=(Bot &&other) noexcept;
 
 	inline virtual ~Bot() noexcept {}
 };

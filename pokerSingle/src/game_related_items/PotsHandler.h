@@ -62,6 +62,18 @@ private: // member variables
 	p_ptr m_reason; // the player the last pot was opened because
 
 	/**
+	 * method for handling the case when a player goes all in. If the given pot is already
+	 * locked then a new pot is needed and thus it contribues the amount to the current pot,
+	 * then opens a new pot and locks it with the leftover amount. If the given pot is open
+	 * then it simply locks it with the given amount.
+	 *
+	 * @param it: an iterator to the current pot.
+	 * @param locker: the player going all in.
+	 * @param amount: the amount he has left.
+	 * @returns true if a new pot was opened, false otherwise.
+	 */
+	bool allInCase(pot_it it, p_ptr locker, chips_t amount);
+	/**
 	 * opens a new pot depending on a recently locked pot.
 	 *
 	 * @param it: an iterator to the pot that the new pot "copy".
@@ -69,6 +81,7 @@ private: // member variables
 	 * @param state: the state of the previous pot to be transffered to the new pot.
 	 * @param remainder: the remainder from the previous pot to be transffered to the new 
 	 * pot.
+	 * @returns an iterator to the new pot.
 	 */
 	pot_it openNewPot(pot_it it, p_ptr locker, PotState state, chips_t remainder);
 	 /**
@@ -77,6 +90,7 @@ private: // member variables
 	  * @param player: the player who will be added to the new pot.
 	  * @param leftOver: the amount the player has left and will be contributed to the new 
 	  * pot.
+	  * @returns an iterator to the new pot.
 	  */
 	pot_it openNewPot(p_ptr player, chips_t leftOver);
 	/**
@@ -88,6 +102,7 @@ private: // member variables
 	 * @param locker: the player who can't call anymore.
 	 * @param amount: the amount he has left.
 	 * @param allIn: a bool indicating whether the player went all in or not.
+	 * @returns true if a new pot was opened, false otherwise.
 	 */
 	bool lockPot(pot_it it, p_ptr locker, chips_t amount, bool allIn = false);
 public:
@@ -95,11 +110,13 @@ public:
 	PotsHandler();
 	// need the players vector to actually construct
 	void create(std::ostream *output, const p_vec &players);
+	PotsHandler(PotsHandler &&other) noexcept;
+	PotsHandler &operator=(PotsHandler &&other) noexcept;
 	PotsHandler(const PotsHandler &) = delete;
 	PotsHandler &operator=(const PotsHandler &) = delete;
 
 	inline const Pot &latestPotAdded() const { return *m_latest; }
-	inline const Player &latestReason() const { return *m_reason; }
+	inline const Player &latestReason() const { return m_latest->getReason(); }
 
 	void reset(const p_vec &players);
 	void postStage();
