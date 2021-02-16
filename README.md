@@ -1,4 +1,4 @@
-========================================================================
+
     CONSOLE APPLICATION : pokerSingle Project Overview
 ========================================================================
 
@@ -31,9 +31,3 @@ pokerSingle.vcxproj.filters
 main.cpp
     This is the main application source file. simply build the project and run pokerSingle.exe
     to see it running.
-
-
-/////////////////////////////////////////////////////////////////////////////
-Other notes:
-
-/////////////////////////////////////////////////////////////////////////////
