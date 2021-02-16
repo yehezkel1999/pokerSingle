@@ -7,15 +7,13 @@ make up your pokerSingle application.
 This project implements a knockout texas hold'em poker game in c++. 
 Each class is devided into a .h and a .cpp file. Currently, this project runs on the 
 console terminal and can either be played with console inputs or just with bots, where 
-you see them play until there is one winner left (you can control this in the flags file).
+you see them play until there is one winner left.
 
 ## Flags.h:
-This file includes flags for debbugging, in order to play a game of poker yourself 
-change the JUST_BOTS flag to 0.
+This file includes flags for debbugging
 
 ## main.cpp
-This is the main application source file. simply build the project and run pokerSingle.exe
-to see it running.
+This is the main application source file.
 
 ## pokerSingle.vcxproj
 This is the main project file for VC++ projects generated using an Application Wizard.
