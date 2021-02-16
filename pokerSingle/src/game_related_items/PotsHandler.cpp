@@ -2,8 +2,8 @@
 #include "../Flags.h"
 #include "PotsHandler.h"
 
-PotsHandler::PotsHandler() : m_output(nullptr), m_pots(), m_latest(nullptr), m_reason() {
-}
+PotsHandler::PotsHandler() 
+	: m_output(nullptr), m_pots(), m_latest(nullptr), m_reason() {}
 void PotsHandler::create(std::ostream *output, const p_vec &players) {
 	m_output = output;
 
@@ -30,17 +30,30 @@ void PotsHandler::postStage() {
 	}
 }
 
+bool PotsHandler::allInCase(pot_it it, p_ptr locker, chips_t amount) {
+	bool opened = false;
+	if (!it->isOpen()) { // if it's already locked then a new pot is needed
+		// contribute amount to current locked pot
+		amount = it->addToPot(locker, amount);
+		// open a new pot and lock it
+		it = openNewPot(locker, 0);
+		lockPot(it, locker, amount, true);
+		opened = true;
+	}
+	else
+		lockPot(m_pots.end() - 1, locker, amount, true);
+	return opened;
+}
 PotsHandler::pot_it PotsHandler::openNewPot(pot_it it, p_ptr locker, PotState state, chips_t remainder) {
 	// if it's locked then the new one will be locked, as well as have a base:
 	// [base] = [remainder] / [amount of players]
 	it = m_pots.push(Pot(*it, locker, state, remainder));
 	m_latest = &(*it);
-	m_reason = locker;
 
 	return it;
 }
 PotsHandler::pot_it PotsHandler::openNewPot(p_ptr player, chips_t leftOver) {
-	pot_it it = m_pots.push(Pot(m_pots.back(), player, leftOver));
+	pot_it it = m_pots.push(Pot(m_pots.back(), player, leftOver, m_reason));
 	m_latest = &(*it);
 	return it;
 }
@@ -95,11 +108,8 @@ bool PotsHandler::addToPots(p_ptr player, chips_t amount, bool cantCall) {
 
 		// player called all his chips / went all in: need to lock the pot, but not open 
 		// a new pot
-		if (allIn && it == m_pots.end() - 1) {
-			if (!it->isOpen()) // if it's allready locked then a new pot is needed
-				openNewPot(player, 0);
-			return lockPot(m_pots.end() - 1, player, leftOver, true);
-		}
+		if (allIn && it == m_pots.end() - 1)
+			return allInCase(it, player, leftOver);
 
 		if (cantCall && it == m_pots.end() - 1) // cant call && last iteration
 			leftOver *= -1;

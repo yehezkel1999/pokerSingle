@@ -15,7 +15,7 @@ chips_t Contributer::baseChange(chips_t newBase) {
 id_t Pot::s_ids = 1;
 
 Pot::Pot(const p_vec &players) : /* this constructor will always be called first */
-	m_id(s_ids), m_base(0), m_state(PotState::start), m_locker(), m_amount(0), m_eligible() {
+	m_id(s_ids), m_base(0), m_state(PotState::start), m_reason(), m_amount(0), m_eligible() {
 	s_ids = 1;
 
 	chips_t count = 0;
@@ -27,7 +27,7 @@ Pot::Pot(const p_vec &players) : /* this constructor will always be called first
 		m_eligible.reserve(count);
 }
 Pot::Pot(const Pot &other, p_ptr player, PotState state, chips_t amount) :
-	m_id(++s_ids), m_base(0), m_state(state), m_locker(), m_amount(amount),
+	m_id(++s_ids), m_base(0), m_state(state), m_reason(player), m_amount(amount),
 	m_eligible() {
 	m_eligible.reserve(other.m_eligible.capacity() - 1);
 
@@ -51,13 +51,11 @@ Pot::Pot(const Pot &other, p_ptr player, PotState state, chips_t amount) :
 			max = contributer._amount;
 	}
 
-	if (!isOpen()) {
+	if (!isOpen())
 		m_base = max;
-		m_locker = player;
-	}
 }
-Pot::Pot(const Pot &other, p_ptr player, chips_t amount) :
-	m_id(++s_ids), m_base(0), m_state(PotState::start), m_locker(), m_amount(amount),
+Pot::Pot(const Pot &other, p_ptr player, chips_t amount, p_ptr reason) :
+	m_id(++s_ids), m_base(0), m_state(PotState::start), m_reason(reason), m_amount(amount),
 	m_eligible() {
 	m_eligible.reserve(other.m_eligible.capacity() - 1);
 
@@ -66,7 +64,7 @@ Pot::Pot(const Pot &other, p_ptr player, chips_t amount) :
 
 Pot::Pot(Pot &&other) noexcept :
 	m_id(other.m_id), m_amount(other.m_amount), m_base(other.m_base), m_state(other.m_state),
-	m_locker(std::move(other.m_locker)), m_eligible(std::move(other.m_eligible)) {
+	m_reason(std::move(other.m_reason)), m_eligible(std::move(other.m_eligible)) {
 
 	other.m_id = 0;
 	other.m_amount = 0;
@@ -81,7 +79,7 @@ Pot &Pot::operator=(Pot &&other) noexcept {
 	m_amount = other.m_amount;
 	m_base = other.m_base;
 	m_state = other.m_state;
-	m_locker = std::move(other.m_locker);
+	m_reason = std::move(other.m_reason);
 	m_eligible = std::move(other.m_eligible);
 
 	other.m_id = 0;
@@ -95,7 +93,7 @@ Pot &Pot::operator=(Pot &&other) noexcept {
 void Pot::reset() {
 	m_base = 0;
 	m_state = PotState::start;
-	m_locker = p_ptr();
+	m_reason = p_ptr();
 	m_amount = 0;
 	m_eligible.clear();
 }
@@ -190,7 +188,6 @@ void Pot::noCheckAdd(p_ptr adder, chips_t amount) {
 	m_amount += amount;
 }
 chips_t Pot::lockPot(p_ptr locker, chips_t amount) {
-	m_locker = locker;
 	if (m_state != PotState::finished)
 		m_state = PotState::locked;
 

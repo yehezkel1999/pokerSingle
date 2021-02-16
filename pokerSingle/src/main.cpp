@@ -60,15 +60,16 @@ void testCalculations() {
 	if (cards)
 		delete[] cards;
 }
+/*
 void testTable() {
 	Table t;
 	int size = 10;
 	Player *players;
-	// players = new Bot[size];
+	players = new Bot[size];
 
 	for (int i = 0; i < size; i++) {
-		// players[i].setTable(&t);
-		// players[i].drawHand(t.takeCardFromDeck(), t.takeCardFromDeck());
+		players[i].setTable(&t);
+		players[i].drawHand(t.takeCardFromDeck(), t.takeCardFromDeck());
 	}
 
 	t.firstDrawToTable();
@@ -98,7 +99,7 @@ void testTable() {
 	for (int i = 0; i < size; i++)
 		std::cout << players[i] << std::endl << std::endl;
 }
-
+*/
 /*
 void testFixedHands() {
 	Card *cards = new Card[SIZE];
@@ -140,7 +141,7 @@ void testFixedHands() {
 
 
 void testGame() {
-	int players = 10;
+	int players = 3;
 	bool bots = true;
 
 #if !DEBUG
