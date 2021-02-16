@@ -61,8 +61,9 @@ protected:
 	std::string m_name;
 
 public:
-	Player(const Player &other);
 	Player(chips_t chips, const char *m_name, const Table *table);
+	Player(const Player &other);
+	Player(Player &&other) noexcept;
 
 	inline id_t getId() const { return m_id; }
 	inline bool isFolded() const { return m_state == PlayerState::folded; }
@@ -106,6 +107,7 @@ public:
 	void checkHand();
 
 	virtual Player &Player::operator=(const Player &other);
+	virtual Player &Player::operator=(Player &&other) noexcept;
 
 	friend class Pot;
 	friend class Game;

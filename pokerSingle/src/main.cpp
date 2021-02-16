@@ -141,7 +141,7 @@ void testFixedHands() {
 
 
 void testGame() {
-	int players = 3;
+	int players = 10;
 	bool bots = true;
 
 #if !DEBUG

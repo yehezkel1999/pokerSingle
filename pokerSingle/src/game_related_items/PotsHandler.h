@@ -110,6 +110,8 @@ public:
 	PotsHandler();
 	// need the players vector to actually construct
 	void create(std::ostream *output, const p_vec &players);
+	PotsHandler(PotsHandler &&other) noexcept;
+	PotsHandler &operator=(PotsHandler &&other) noexcept;
 	PotsHandler(const PotsHandler &) = delete;
 	PotsHandler &operator=(const PotsHandler &) = delete;
 

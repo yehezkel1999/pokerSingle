@@ -11,6 +11,26 @@ void PotsHandler::create(std::ostream *output, const p_vec &players) {
 	m_pots.reserve(players.size() > 5 ? 4 : 3);
 	m_latest = &(*m_pots.push(Pot(players)));
 }
+PotsHandler::PotsHandler(PotsHandler &&other) noexcept
+	: m_output(m_output), m_pots(std::move(other.m_pots)), m_latest(other.m_latest),
+	m_reason(std::move(other.m_reason)) {
+	other.m_output = nullptr;
+	other.m_latest = nullptr;
+}
+PotsHandler &PotsHandler::operator=(PotsHandler &&other) noexcept {
+	if (this == &other)
+		return *this;
+
+	m_output = m_output;
+	m_pots = std::move(other.m_pots);
+	m_latest = other.m_latest;
+	m_reason = std::move(other.m_reason);
+
+	other.m_output = nullptr;
+	other.m_latest = nullptr;
+
+	return *this;
+}
 
 void PotsHandler::reset(const p_vec &players) {
 	if (m_pots.size() > 1)

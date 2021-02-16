@@ -2,6 +2,8 @@
 
 ConsolePlayer::ConsolePlayer(const ConsolePlayer &other)
 	: Player(other) {}
+ConsolePlayer::ConsolePlayer(ConsolePlayer &&other) noexcept
+	: Player(std::move(other)) {}
 ConsolePlayer::ConsolePlayer(chips_t chips, const Table *table)
 	: Player(chips, "The player", table) {}
 
@@ -60,4 +62,21 @@ const Decision &ConsolePlayer::notEnoughChips() {
 	std::cin >> input;
 	return input == 0 ? m_latestDecision.newDecision(Action::fold) :
 		m_latestDecision.newDecision(Action::raise, input);
+}
+
+ConsolePlayer &ConsolePlayer::operator=(ConsolePlayer &&other) noexcept {
+	if (this == &other)
+		return *this;
+
+	Player::operator=(std::move(other));
+
+	return *this;
+}
+ConsolePlayer &ConsolePlayer::operator=(const ConsolePlayer &other) {
+	if (this == &other)
+		return *this;
+
+	Player::operator=(other);
+
+	return *this;
 }
