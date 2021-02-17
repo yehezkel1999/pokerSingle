@@ -32,9 +32,11 @@ class Player {
 
 	const Table *m_table;
 
+	inline void preTurn(chips_t callAmount) noexcept 
+	{ m_callAmount = callAmount; m_latestDecision.preTurn(); }
 	void reset(chips_t baseRaise, chips_t callAmount);
-
 	inline void resetDecision() noexcept { m_latestDecision.reset(); }
+
 	inline void smallBlind() noexcept 
 	{ m_latestDecision.newDecision(Action::call, m_callAmount /= 2); }
 	inline void bigBlind() noexcept 

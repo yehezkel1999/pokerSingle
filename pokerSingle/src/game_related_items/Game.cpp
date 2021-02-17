@@ -210,7 +210,7 @@ bool Game::stage(p_it firstBetter) {
 		}
 
 		// set the player's call amount before his turn in case someone raised
-		it->get()->setCallAmount(m_curCallAmount);
+		it->get()->preTurn(m_curCallAmount);
 
 		if (!it->get()->isBroke() && it->get()->canCallAmount(m_curCallAmount)) {
 			try { it->get()->doTurn(); }
