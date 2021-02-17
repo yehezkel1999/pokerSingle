@@ -60,24 +60,43 @@ void testCalculations() {
 	if (cards)
 		delete[] cards;
 }
-/*
+void testSpecificCards() {
+	Table t;
+	std::shared_ptr<HandAttempt> hand = std::make_shared<HandAttempt>();
+
+	Card cards[7];
+	cards[0] = Card(4, Symbol::diamond);
+	cards[1] = Card(4, Symbol::heart);
+	cards[2] = Card(5, Symbol::heart);
+	cards[3] = Card(11, Symbol::spade);
+	cards[4] = Card(11, Symbol::heart);
+	cards[5] = Card(12, Symbol::heart);
+	cards[6] = Card(12, Symbol::club);
+	func::sort(cards, 7);
+
+	//t.calcSevenCards(cards, hand);
+
+}
 void testTable() {
 	Table t;
 	int size = 10;
-	Player *players;
-	players = new Bot[size];
+	char names[9] = "player  ";
 
+	std::vector<Bot> players;
+	players.reserve(size);
 	for (int i = 0; i < size; i++) {
-		players[i].setTable(&t);
-		players[i].drawHand(t.takeCardFromDeck(), t.takeCardFromDeck());
+		names[9 - 2] = '0' + i + 1;
+		players.emplace_back(1000, names, true, &t);
 	}
+
+	for (int i = 0; i < size; i++)
+		//players[i].drawHand(t.takeCardFromDeck(), t.takeCardFromDeck());
 
 	t.firstDrawToTable();
 	std::cout << "t: " << t << std::endl << std::endl;
 	for (int i = 0; i < size; i++)
 		players[i].checkHand();
 	std::cout << std::endl << std::endl;
-	Player::sortPlayers(players, size);
 	for (int i = 0; i < size; i++)
 		std::cout << players[i] << std::endl << std::endl;
 
@@ -86,7 +105,6 @@ void testTable() {
 	for (int i = 0; i < size; i++)
 		players[i].checkHand();
 	std::cout << std::endl << std::endl;
-	Player::sortPlayers(players, size);
 	for (int i = 0; i < size; i++)
 		std::cout << players[i] << std::endl << std::endl;
 
@@ -95,11 +113,9 @@ void testTable() {
 	for (int i = 0; i < size; i++)
 		players[i].checkHand();
 	std::cout << std::endl << std::endl;
-	Player::sortPlayers(players, size);
 	for (int i = 0; i < size; i++)
 		std::cout << players[i] << std::endl << std::endl;
 }
-*/
 /*
 void testFixedHands() {
 	Card *cards = new Card[SIZE];
@@ -187,7 +203,8 @@ void testCommas() {
 int main() {
 	// testDeck();
 	// testCalculations();
-	// testTable();
+	// testTable(); 
+	// testSpecificCards();
 	// testFixedHands();
 	// testCommas();
 	

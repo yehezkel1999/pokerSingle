@@ -113,16 +113,6 @@ public:
 	friend class Game;
 	friend std::ostream &operator<<(std::ostream &output, const Player &source);
 
-	/**
-	 * Static function for Player class, sorts the given sequence of players by their best hand frow
-	 * low to high in a time complexety of (n^2+n)/2 (does not consider card symbols).
-	 *
-	 * @param cards: a pointer to the array of players to sort.
-	 * @param size: the size of the array.
-	 * @exceptsafe This function does not throw exceptions.
-	 */
-	static void sortPlayers(Player *players, unsigned int size);
-
 	inline virtual ~Player() noexcept {}
 };
 

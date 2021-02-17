@@ -46,29 +46,54 @@ Stage Table::currentStage() const noexcept {
 	return Stage::preFlop;
 }
 
-// only accepts 6 card sequences, allocates and returns memory
-void Table::calcSixCards(const Card *cards, std::shared_ptr<HandAttempt> handAttempt) const {
-	HandAttempt five, max;
-	HandAttempt::size_type count = 5;
+// only accepts 6 card sequences
+void Table::calcSixCards(const Card *cards, std::shared_ptr<HandAttempt> handAttempt) {
+	// caculates all the 5 card combinations for these 6 cards, 6 cards = 6 combinations 
+	// of 5 cards
+
+	HandAttempt five;
+	HandAttempt::size_type count = 5; // 6 combinations = 5 card replacements
 
 	for (HandAttempt::size_type i = 0; i < HandAttempt::s_size ; i++)
 		five[i] = cards[i];
 	five.calcFiveCards();
 
-	max = five;
+	*handAttempt = five;
 	for (HandAttempt::signed_size_type i = count - 1; i >= 0; i--) { // count will always be one more than i
 		five.wipe(); // wipes it so [] operator won't throw an exception
 		five[i] = cards[count]; // every loop five replaces the i cell with the card that 
 		count--;				// wasn't in the sequence the last loop
 		five.calcFiveCards();
-		if (five > max)
-			max = five;
+		if (five > *handAttempt)
+			*handAttempt = five;
+	}
+}
+// only accepts 7 card sequences
+void Table::calcSevenCards(const Card *cards, std::shared_ptr<HandAttempt> handAttempt) {
+	// caculates all the 5 card combinations for these 7 cards, 7 cards = 36 combinations 
+	// of 5 cards. This is done by using the 6 cards method, 6 card combinations of 7 cards, 
+	// 7 cards = 7 combinations of 6 cards.
+
+	Card six[6];
+	HandAttempt max;
+	HandAttempt::size_type count = 6; // 7 combinations = 6 card replacements
+
+	for (HandAttempt::size_type i = 0; i < 6; i++)
+		six[i] = cards[i];
+	calcSixCards(six, handAttempt); // calcs the best hand attempt for first 6 cards
+
+	max = *handAttempt;
+	for (HandAttempt::signed_size_type i = count - 1; i >= 0; i--) { // count will always be one more than i
+		six[i] = cards[count]; // every loop six replaces the i cell with the card that 
+		count--;				// wasn't in the sequence the last loop
+		calcSixCards(six, handAttempt); // puts the best had attempt combination these 6 cards have in the var
+		if (*handAttempt > max)
+			max = *handAttempt;
 	}
 
-	*handAttempt = HandAttempt(max);
-}
-// only accepts 7 card sequences, allocates and returns memory
-void Table::calcSevenCards(const Card *cards, std::shared_ptr<HandAttempt> handAttempt) const {
+	*handAttempt = max;
+
+	/*
 	HandAttempt five, max;
 	HandAttempt::size_type count = 0;
 
@@ -89,6 +114,7 @@ void Table::calcSevenCards(const Card *cards, std::shared_ptr<HandAttempt> handA
 			five.wipe(); // wipes it so [] operator won't throw an exception
 		}
 	*handAttempt = HandAttempt(max);
+	*/
 }
 void Table::calculateHand(const Hand& hand, std::shared_ptr<HandAttempt> handAttempt) const {
 #if DEBUG

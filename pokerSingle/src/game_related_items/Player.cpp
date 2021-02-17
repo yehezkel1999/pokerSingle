@@ -210,17 +210,3 @@ std::ostream &operator<<(std::ostream &output, const Player &source) {
 
 	return output;
 }
-
-void Player::sortPlayers(Player *players, unsigned int size) {
-	Player *temp;
-	for (unsigned int i = 1; i < size; i++) {
-		if (i == 0)
-			i++;
-		if (*players[i].m_bestHand < *players[i - 1].m_bestHand) {
-			temp = &players[i];
-			players[i] = players[i - 1];
-			players[i - 1] = *temp;
-			i -= 2;
-		}
-	}
-}
