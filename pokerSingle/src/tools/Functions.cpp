@@ -42,7 +42,7 @@ std::ostream &func::commas(std::ostream &output, chips_t number) {
 		if (i == 0) // first should be outputed without zeros before it
 			output << number / ceiling;
 		else
-			threeDigitsToOutput(output, number / ceiling);
+			threeDigitsToOutput(output, (chips_t) ((unsigned long long) number / ceiling));
 
 		if (i != count - 1) // last shouldnt have a comma after it
 			output << ',';

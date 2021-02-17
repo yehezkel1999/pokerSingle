@@ -14,17 +14,12 @@ chips_t Contributer::baseChange(chips_t newBase) {
 
 id_t Pot::s_ids = 1;
 
-Pot::Pot(const p_vec &players) : /* this constructor will always be called first */
+Pot::Pot(p_vec::size_type capacity) : /* this constructor will always be called first */
 	m_id(s_ids), m_base(0), m_state(PotState::start), m_reason(), m_amount(0), m_eligible() {
 	s_ids = 1;
 
-	chips_t count = 0;
-	for (const p_ptr &player : players)
-		if (!player->isFolded())
-			count++;
-
-	if (count)
-		m_eligible.reserve(count);
+	if (capacity)
+		m_eligible.reserve(capacity);
 }
 Pot::Pot(const Pot &other, p_ptr player, PotState state, chips_t amount) :
 	m_id(++s_ids), m_base(0), m_state(state), m_reason(player), m_amount(amount),

@@ -46,6 +46,10 @@ public:
 	* and shuffles them.
 	*/
 	Table();
+	Table(Table &&other) noexcept;
+	Table &operator=(Table &&other) noexcept;
+	Table(const Table &) = delete;
+	Table &operator=(const Table &) = delete;
 
 	/**
 	* Method for this table class, resets the table to its original state, as if the 

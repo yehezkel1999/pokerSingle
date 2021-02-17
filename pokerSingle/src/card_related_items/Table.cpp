@@ -8,8 +8,28 @@
 #include "../Flags.h"
 
 Table::Table()
-	: m_deck(), m_table(), m_curAmount(0) {
-	m_deck.shuffle();
+	: m_deck(), m_table(), m_curAmount(0) {}
+Table::Table(Table &&other) noexcept
+	: m_deck(std::move(other.m_deck)), m_table(), m_curAmount(other.m_curAmount) {
+	for (size_type i = 0; i < m_curAmount; i++) {
+		m_table[i] = other.m_table[i];
+		other.m_table[i] = Card();
+	}
+	other.m_curAmount = 0;
+}
+Table &Table::operator=(Table &&other) noexcept {
+	if (this == &other)
+		return *this;
+
+	m_deck = std::move(other.m_deck);
+	for (size_type i = 0; i < m_curAmount; i++) {
+		m_table[i] = other.m_table[i];
+		other.m_table[i] = Card();
+	}
+	m_curAmount = other.m_curAmount;
+	other.m_curAmount = 0;
+
+	return *this;
 }
 
 void Table::reset() noexcept {

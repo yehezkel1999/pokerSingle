@@ -42,7 +42,7 @@ Game::Game(size_type playerAmount, bool onlyBots)
 	for (size_type i = 0; i < playerAmount - place - 1; i++)
 		addBot(s_startingChips);
 
-	m_potHandler.create(m_output, m_players);
+	m_potHandler.create(m_output, m_players.size());
 
 	*m_output << std::endl << "*A new game is starting*" << std::endl;
 }
@@ -172,15 +172,16 @@ Game::p_it Game::blindsAndCards(p_it firstPlayer) {
 		}
 
 		if (count == 0)
-			it->get()->smallBlind();
+			it->get()->smallBlind(); // makes decision manually for player (half the call amount)
 		else if (count == 1)
-			it->get()->bigBlind();
+			it->get()->bigBlind(); // makes decision manually for player (full call amount)
 #if DEBUG
 		if (it->get()->getChips() == 0)
 			throw std::logic_error("player should've been kicked before this match started");
 		else
 #endif
-		// if player.chips < small/big blind
+		// if player.chips < small/big blind, decision was forcelly made for them, so 
+		// checking their chips against their "decision"
 		if (it->get()->getChips() < it->get()->getLatestDecision().getAmount())
 			finalAction(it);
 		else

@@ -33,9 +33,9 @@ Player::Player(chips_t m_chips, const char *m_name, const Table *m_table)
 	m_bestHand(std::make_shared<HandAttempt>()), m_table(m_table), m_latestDecision(),
 	m_name(m_name) {}
 
-void Player::reset(chips_t m_baseRaise, chips_t m_callAmount) {
-	this->m_baseRaise = m_baseRaise;
-	this->m_callAmount = m_callAmount;
+void Player::reset(chips_t baseRaise, chips_t callAmount) {
+	m_baseRaise = baseRaise;
+	m_callAmount = callAmount;
 	m_chipsTaken = 0;
 	m_state = PlayerState::playing;
 
