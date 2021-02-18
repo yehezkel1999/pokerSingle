@@ -1,9 +1,6 @@
 # CONSOLE APPLICATION : pokerSingle Project Overview
 
-This file contains a summary of what you will find in each of the files that
-make up your pokerSingle application.
-
-## Project:
+## The Project:
 This project implements a knockout texas hold'em poker game in c++. 
 Each class is devided into a .h and a .cpp file. Currently, this project runs on the 
 console terminal and can either be played with console inputs or just with bots, where 
