@@ -30,14 +30,21 @@ class Decision {
 	chips_t m_amount; // The amount this player will add to the pot, this turn.
 	chips_t m_previousAmount; // The previous amount.
 
-	const char *actionToString() const noexcept;
+#if DEBUG
+	bool m_made; // bool for if a new decision was made this turn
+#endif
+
 	// resets action to call and both amounts to 0.
-	inline void reset() noexcept { m_action = Action::call; m_amount = 0; m_previousAmount = 0; }
+	void reset() noexcept;
+	// resets the members that needs to be reset before every turn.
+	inline void preTurn() noexcept { m_made = false; }
 	// changes the decision manually (without changing previous amount)
 	inline void changeDecision(Action action) noexcept { m_action = action; }
 	// changes the decision manually (without changing previous amount)
 	inline void changeDecision(Action action, chips_t amount) noexcept
 	{ m_action = action; m_amount = amount; }
+
+	const char *actionToString() const noexcept;
 public:
 	/**
 	 * Defualt constructor for Decision class, sets both amounts to 0 and action to fold.
@@ -86,7 +93,7 @@ public:
 	 * @param amount: the amount of chips adjacent to your decision.
 	 * @returns the decision itself.
 	 */
-	const Decision &newDecision(Action action, chips_t amount = 0) noexcept;
+	const Decision &newDecision(Action action, chips_t amount = 0);
 
 	/**
 	 * Assignment operator for Decision class, simply copies member values from the other

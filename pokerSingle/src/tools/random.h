@@ -49,18 +49,27 @@ public:
 	 */
 	inline static bool chance(int percentage) { return get().iRandInt(0, 99) + 1 <= percentage; }
 
-	template <typename T> static void randomize(T *arr, int size) {
-		T temp;
-		int randomNum;
-
-		for (int i = size - 1; i > 0; i--) {
-			randomNum = get().iRandInt(0, i);
-			temp = arr[i - 1];
-			arr[i - 1] = arr[randomNum];
-			arr[randomNum] = temp;
-		}
-	}
+	/**
+	 * Template static function for an array, randomizes the given array. Uses item's move 
+	 * constructor and move assignment operator.
+	 *
+	 * @param arr: a pointer to the array.
+	 * @param size: the size of the array.
+	 */
+	template <typename T> 
+	static void randomize(T *arr, int size);
 };
+
+template <typename T> inline
+void random::randomize(T *arr, int size){
+	int randomNum;
+	for (int i = size - 1; i > 0; i--) {
+		randomNum = get().iRandInt(0, i);
+		T temp(std::move(arr[i - 1]));
+		arr[i - 1] = std::move(arr[randomNum]);
+		arr[randomNum] = std::move(temp);
+	}
+}
 
 /*
 	template <typename T>

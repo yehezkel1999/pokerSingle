@@ -28,17 +28,17 @@ void HandAttempt::highCardHandle() {
 }
 void HandAttempt::twoPairHandle() {
 	Card card;
-	for (signed_size_type i = s_size - 1; i > 0; i--) {
+	for (signed_size_type i = s_size - 1; i >= 0; i--) {
 		card = m_cards[i];
 		if (card.getValue() == m_cards[i - 1].getValue()) { // the card is one of the pairs
 			if (i == s_size - 1 || i == s_size - 2) // has to be one of these since the sequence is in order
 				addHash(card, Relevance::first);
 			else // the second pair
 				addHash(card, Relevance::second);
-			i--;
+			i--; // so the card's value wont be added twice
 		}
 		else // the lone card
-				addHash(card, Relevance::third);
+			addHash(card, Relevance::third);
 	}
 }
 bool HandAttempt::twoPairSequence() { // This method gets called after three of a kind so this case cannot happen
@@ -71,7 +71,7 @@ bool HandAttempt::fullHouseSequence() {
 		if (m_cards[i].getValue() == m_cards[i - 1].getValue())
 			count++;
 		// this else is when a card isn't equal to the previous card.
-		// since the card values are in order a full house will always start with two equal m_cards
+		// since the card values are in order a full house will always start with two equal cards
 		// so if count is 1 then it is not a full house, also as long as i is not the last cell 
 		// then if the next card doesn't have this card's value then it's not a full house, for 
 		// example: 22344 or 666JQ
@@ -98,7 +98,7 @@ HandAttempt::size_type HandAttempt::timesOfaKind() {
 	for (size_type i = 1; i < s_size; i++)
 		if (m_cards[i].getValue() == m_cards[i - 1].getValue())
 			count++;
-		else if (count > 1) // one there are two or more of the same value it returns the amount
+		else if (count > 1) // once there are two or more of the same value it returns the amount
 			return count;
 	return count;
 }

@@ -4,11 +4,11 @@
 
 PotsHandler::PotsHandler() 
 	: m_output(nullptr), m_pots(), m_latest(nullptr), m_reason() {}
-void PotsHandler::create(std::ostream *output, const p_vec &players) {
+void PotsHandler::create(std::ostream *output, p_vec::size_type players) {
 	m_output = output;
 
 	// probable amount of pots that will be used
-	m_pots.reserve(players.size() > 5 ? 4 : 3);
+	m_pots.reserve(players > 5 ? 4 : 3);
 	m_latest = &(*m_pots.push(Pot(players)));
 }
 PotsHandler::PotsHandler(PotsHandler &&other) noexcept

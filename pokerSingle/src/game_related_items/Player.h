@@ -32,9 +32,11 @@ class Player {
 
 	const Table *m_table;
 
+	inline void preTurn(chips_t callAmount) noexcept 
+	{ m_callAmount = callAmount; m_latestDecision.preTurn(); }
 	void reset(chips_t baseRaise, chips_t callAmount);
-
 	inline void resetDecision() noexcept { m_latestDecision.reset(); }
+
 	inline void smallBlind() noexcept 
 	{ m_latestDecision.newDecision(Action::call, m_callAmount /= 2); }
 	inline void bigBlind() noexcept 
@@ -112,16 +114,6 @@ public:
 	friend class Pot;
 	friend class Game;
 	friend std::ostream &operator<<(std::ostream &output, const Player &source);
-
-	/**
-	 * Static function for Player class, sorts the given sequence of players by their best hand frow
-	 * low to high in a time complexety of (n^2+n)/2 (does not consider card symbols).
-	 *
-	 * @param cards: a pointer to the array of players to sort.
-	 * @param size: the size of the array.
-	 * @exceptsafe This function does not throw exceptions.
-	 */
-	static void sortPlayers(Player *players, unsigned int size);
 
 	inline virtual ~Player() noexcept {}
 };

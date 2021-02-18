@@ -52,6 +52,8 @@ class HandAttempt {
 public:
 	using size_type = unsigned short;
 	using signed_size_type = signed short;
+	using iterator = Card *;
+	using const_iterator = const Card *;
 
 private:
 	Card m_cards[5]; // The sequence of cards that is being calculated and ranked.
@@ -72,7 +74,10 @@ private:
 
 	void addHash(unsigned int amount, Relevance relevance) noexcept;
 	inline void addHash(const Card &card, Relevance relevance) noexcept
-	{ addHash(Card::getOpposingValue(card.getValue()), relevance) ;}
+	{ addHash(Card::getOpposingValue(card.getValue()), relevance); }
+
+	inline iterator begin() { return &m_cards[0]; }
+	inline iterator end() { return &m_cards[s_size]; }
 public:
 	// A hand attempt can only have 5 cards, no more no less (standard poker rules).
 	static const size_type s_size = 5;
@@ -211,6 +216,9 @@ public:
 	* @param other: the HandAttempt that is being copied.
 	*/
 	HandAttempt &operator=(const HandAttempt &other) noexcept;
+
+	inline const_iterator begin() const { return &m_cards[0]; }
+	inline const_iterator end() const { return &m_cards[s_size]; }
 
 	/**
 	 * Overloaded operator << of std::ostream. Allows std::ostream to accept a HandAttempt 

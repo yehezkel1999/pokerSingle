@@ -35,8 +35,8 @@ private:
 	Card m_table[5]; // the cards in the game that are on the table (has up to 5 cards).
 	size_type m_curAmount; // the current amout of cards that are on the table.
 
-	void calcSixCards(const Card *cards, std::shared_ptr<HandAttempt> handAttempt) const;
-	void calcSevenCards(const Card *cards, std::shared_ptr<HandAttempt> handAttempt) const;
+	static void calcSixCards(const Card *cards, std::shared_ptr<HandAttempt> handAttempt);
+	static void calcSevenCards(const Card *cards, std::shared_ptr<HandAttempt> handAttempt);
 public:
 	static const size_type s_size = 5; // the maximum size of the table array that is in every object.
 
@@ -46,6 +46,10 @@ public:
 	* and shuffles them.
 	*/
 	Table();
+	Table(Table &&other) noexcept;
+	Table &operator=(Table &&other) noexcept;
+	Table(const Table &) = delete;
+	Table &operator=(const Table &) = delete;
 
 	/**
 	* Method for this table class, resets the table to its original state, as if the 

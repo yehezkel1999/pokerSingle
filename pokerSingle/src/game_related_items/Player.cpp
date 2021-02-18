@@ -33,9 +33,9 @@ Player::Player(chips_t m_chips, const char *m_name, const Table *m_table)
 	m_bestHand(std::make_shared<HandAttempt>()), m_table(m_table), m_latestDecision(),
 	m_name(m_name) {}
 
-void Player::reset(chips_t m_baseRaise, chips_t m_callAmount) {
-	this->m_baseRaise = m_baseRaise;
-	this->m_callAmount = m_callAmount;
+void Player::reset(chips_t baseRaise, chips_t callAmount) {
+	m_baseRaise = baseRaise;
+	m_callAmount = callAmount;
 	m_chipsTaken = 0;
 	m_state = PlayerState::playing;
 
@@ -209,18 +209,4 @@ std::ostream &operator<<(std::ostream &output, const Player &source) {
 		output << *source.m_bestHand;
 
 	return output;
-}
-
-void Player::sortPlayers(Player *players, unsigned int size) {
-	Player *temp;
-	for (unsigned int i = 1; i < size; i++) {
-		if (i == 0)
-			i++;
-		if (*players[i].m_bestHand < *players[i - 1].m_bestHand) {
-			temp = &players[i];
-			players[i] = players[i - 1];
-			players[i - 1] = *temp;
-			i -= 2;
-		}
-	}
 }

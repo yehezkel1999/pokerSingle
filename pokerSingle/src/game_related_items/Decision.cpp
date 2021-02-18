@@ -3,26 +3,26 @@
 #include "../tools/Functions.h"
 
 Decision::Decision() noexcept
-	: m_action(Action::fold), m_amount(0), m_previousAmount(0) {}
+	: m_action(Action::fold), m_amount(0), m_previousAmount(0)
+#if DEBUG
+	, m_made(false)
+#endif
+{}
 Decision::Decision(const Decision &other) noexcept
 	: m_action(other.m_action), m_amount(other.m_amount),
-	m_previousAmount(other.m_previousAmount) {}
-
-chips_t Decision::difference() const {
+	m_previousAmount(other.m_previousAmount) 
 #if DEBUG
-	if (m_action != Action::fold && m_amount < m_previousAmount)
-		throw std::logic_error("current decision amount cannot be smaller than previous amount");
+	, m_made(other.m_made)
 #endif
-	return m_amount - m_previousAmount;
-}
+{}
 
-const Decision &Decision::newDecision(Action action, chips_t amount) noexcept {
-	m_action = action;
-
-	m_previousAmount = m_amount;
-	m_amount = amount;
-
-	return *this;
+void Decision::reset() noexcept {
+	m_action = Action::call; 
+	m_amount = 0; 
+	m_previousAmount = 0; 
+#if DEBUG
+	m_made = false;
+#endif
 }
 
 const char *Decision::actionToString() const noexcept {
@@ -38,6 +38,31 @@ const char *Decision::actionToString() const noexcept {
 	}
 	return nullptr;
 }
+
+chips_t Decision::difference() const {
+#if DEBUG
+	if (m_action != Action::fold && m_amount < m_previousAmount)
+		throw std::logic_error("current decision amount cannot be smaller than previous amount");
+#endif
+	return m_amount - m_previousAmount;
+}
+
+const Decision &Decision::newDecision(Action action, chips_t amount) {
+	m_action = action;
+
+	m_previousAmount = m_amount;
+	m_amount = amount;
+
+#if DEBUG
+	if (m_made)
+		throw std::logic_error("cannot make a new decision more than once per turn");
+	else
+		m_made = true;
+#endif
+
+	return *this;
+}
+
 Decision &Decision::operator=(const Decision &other) noexcept {
 	if (this == &other)
 		return *this;
@@ -45,6 +70,9 @@ Decision &Decision::operator=(const Decision &other) noexcept {
 	m_action = other.m_action;
 	m_amount = other.m_amount;
 	m_previousAmount = other.m_previousAmount;
+#if DEBUG
+	m_made = other.m_made;
+#endif
 
 	return *this;
 }

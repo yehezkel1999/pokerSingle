@@ -2,8 +2,6 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#define OUTPUT_FILE_NAME "log\\output.txt"
-
 #include "../Flags.h"
 #include <vector>
 #include <memory>

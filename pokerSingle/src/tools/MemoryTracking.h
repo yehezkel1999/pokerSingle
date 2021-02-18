@@ -8,8 +8,6 @@
 
 #include <fstream>
 
-#define MEMORY_FILE_NAME "log\\poker_memory_usage.txt"
-
 /**
  * Singleton struct as only one memory tracker (per program) is needed.
  */

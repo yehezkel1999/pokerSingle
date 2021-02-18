@@ -47,7 +47,7 @@ public:
 
 	/**
 	 * Template function for an array, sorts the given array from low to high in a time
-	 * complexety of (n^2+n)/2. Uses item's default constructor, assignment operator and
+	 * complexety of (n^2+n)/2. Uses item's move constructor, move assignment operator and
 	 * operator<.
 	 *
 	 * @param arr: a pointer to the array.
@@ -66,14 +66,13 @@ bool func::isSorted(const T *arr, size_t size) {
 }
 template <typename T>
 void func::sort(T *arr, size_t size) {
-	T temp;
 	for (size_t i = 1; i < size; i++) {
 		if (i == 0)
 			i++;
 		if (arr[i] < arr[i - 1]) {
-			temp = arr[i];
-			arr[i] = arr[i - 1];
-			arr[i - 1] = temp;
+			T temp(std::move(arr[i]));
+			arr[i] = std::move(arr[i - 1]);
+			arr[i - 1] = std::move(temp);
 			i -= 2;
 		}
 	}

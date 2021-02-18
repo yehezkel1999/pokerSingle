@@ -108,7 +108,7 @@ private: // member variables
 	std::ostream &potDeclareName(std::ostream &output) const;
 public:
 
-	Pot(const p_vec &players);
+	Pot(p_vec::size_type capacity = 0);
 	/**
 	 * Constructor for this pot, Copies the eligible players from the other pot except the
 	 * given player, as he is the reason another pot is needed. This constructor also gives \

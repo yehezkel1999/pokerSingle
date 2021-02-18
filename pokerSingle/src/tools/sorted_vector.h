@@ -8,7 +8,7 @@
 
 // if there's an array implementation then insertion is already costly and needs to move
 // elements to the right regardless
-#define ARRAY_IMPLEMENTATION 1
+#define VECTOR_ARRAY_IMPLEMENTATION 1
 
 
 template <typename T>
@@ -169,7 +169,7 @@ sorted_vector<T>::iterator sorted_vector<T>::push(const value_type &value) {
 		m_data.push_back(value);
 		return begin();
 }
-#if ARRAY_IMPLEMENTATION
+#if VECTOR_ARRAY_IMPLEMENTATION
 	return array_insert(value);
 #else
 	size_type place = find(value);
@@ -188,7 +188,7 @@ sorted_vector<T>::iterator sorted_vector<T>::push(value_type &&value) {
 		m_data.push_back(std::move(value));
 		return begin();
 	}
-#if ARRAY_IMPLEMENTATION
+#if VECTOR_ARRAY_IMPLEMENTATION
 	return array_insert(std::move(value));
 #else
 	size_type place = find(value);
