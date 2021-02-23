@@ -29,6 +29,11 @@ deck of cards and the open cards that are on the table (flop, turn, river).
 the type of the hand (high card, pair, two pair, etc.) and a hashcode for compairing purposes.
 - Card, this class represents a card (a symbol and a value).
 
+## Future Features:
+- a smarter bot.
+- a GUI.
+- online play.
+
 ### feedback:
 Any feedback to make my code better would be much appreciated, feel free to email me @ 
 talbenyehezkel@gmail.com
