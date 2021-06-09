@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\players\Bot.h" />
     <ClInclude Include="src\card_related_items\Card.h" />
     <ClInclude Include="src\players\ConsolePlayer.h" />

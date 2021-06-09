@@ -39,7 +39,7 @@ public:
 	 *
 	 * @return true or false with an equal chance.
 	 */
-	inline bool randBool() { return (bool)get().iRandInt(0, 1); }
+	inline static bool randBool() { return (bool)get().iRandInt(0, 1); }
 	/**
 	 * This function returns true depending on the inputed parameter, the bigger it is the
 	 * more likely this function is to return true.

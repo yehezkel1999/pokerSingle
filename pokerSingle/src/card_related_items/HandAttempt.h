@@ -204,10 +204,7 @@ public:
 	 * object with the default constructor, or wiped the object before this).
 	 *
 	 * @param place: the place of the card in the sequence of cards (ranging from 0 to 4). 
-	 * @return the card from the given place in the sequence. 
-	 * @throw std::out_of_range exception if place is smaller than 0 or bigger than 4. 
-	 * @throw std::logic_error exception if this operator is called on an already calculated 
-	 * HandAttempt. 
+	 * @return the card from the given place in the sequence.
 	 */
 	Card &operator[](size_type place);
 	/**

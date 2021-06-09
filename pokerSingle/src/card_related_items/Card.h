@@ -1,7 +1,7 @@
 #ifndef CARD_H_
 #define CARD_H_
 
-#include <iostream>
+#include "../pch.h"
 
 /**
  * Implamentation of a card symbol enum.

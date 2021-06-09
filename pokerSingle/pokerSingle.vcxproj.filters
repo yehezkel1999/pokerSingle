@@ -25,6 +25,7 @@
     <ClInclude Include="src\game_related_items\Pot.h" />
     <ClInclude Include="src\tools\sorted_vector.h" />
     <ClInclude Include="src\card_related_items\Table.h" />
+    <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\players\Bot.cpp" />

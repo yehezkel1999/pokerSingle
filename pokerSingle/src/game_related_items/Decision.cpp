@@ -42,7 +42,7 @@ const char *Decision::actionToString() const noexcept {
 chips_t Decision::difference() const {
 #if DEBUG
 	if (m_action != Action::fold && m_amount < m_previousAmount)
-		throw std::logic_error("current decision amount cannot be smaller than previous amount");
+		assert("current decision amount cannot be smaller than previous amount");
 #endif
 	return m_amount - m_previousAmount;
 }
@@ -55,7 +55,7 @@ const Decision &Decision::newDecision(Action action, chips_t amount) {
 
 #if DEBUG
 	if (m_made)
-		throw std::logic_error("cannot make a new decision more than once per turn");
+		assert("cannot make a new decision more than once per turn");
 	else
 		m_made = true;
 #endif

@@ -60,7 +60,9 @@ public:
 	//template <typename... Args>
 	//value_type &emplace(Args&&... args);
 
-	value_type &operator[](size_type place) const { return m_data[place]; }
+	value_type &operator[](size_type place) { return m_data[place]; }
+	const value_type &operator[](size_type place) const { return m_data[place]; }
+
 	sorted_vector &operator=(const sorted_vector &other);
 	sorted_vector &operator=(sorted_vector &&other);
 

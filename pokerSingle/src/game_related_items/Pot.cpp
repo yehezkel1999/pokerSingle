@@ -34,7 +34,7 @@ Pot::Pot(const Pot &other, p_ptr player, PotState state, chips_t amount) :
 	// this constructor is rached when someone cant call, so if the pot has no players in 
 	// it then something went wrong
 	if (m_eligible.empty())
-		throw std::logic_error("empty pot");
+		assert("empty pot");
 #endif
 
 	chips_t max = 0;
@@ -224,7 +224,7 @@ void Pot::calcWinner(std::ostream &output) {
 		}
 #if DEBUG
 	if (winner == m_eligible.end())
-		throw std::logic_error("empty pot");
+		assert("empty pot");
 #endif
 
 	// calculate winner first so the highest hashcode will be known before going into the 
@@ -254,7 +254,7 @@ Player &Pot::oneLeft() {
 		if (!contributer._player->isFolded())
 			return *contributer._player;
 #if DEBUG
-	throw std::logic_error("oneLeft method called but there were no players left");
+	assert("oneLeft method called but there were no players left");
 #endif
 }
 chips_t Pot::winnerCount(const Player &winner) {
@@ -327,7 +327,7 @@ const char *Pot::stateToString() const {
 	return "null";
 }
 std::ostream &Pot::potDeclareName(std::ostream &output) const {
-	return m_id == 1 ? output << "the main pot" : output << "pot #" << m_id;
+	return m_id == 1 ? output << "Main Pot" : output << "Pot #" << m_id;
 }
 std::ostream &operator<<(std::ostream &output, const Pot &source) {
 	source.potDeclareName(output) << ": ";

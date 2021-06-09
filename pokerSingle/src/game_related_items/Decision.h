@@ -3,7 +3,7 @@
 #define DECISION_H_
 
 #include "../Flags.h"
-#include <iostream>
+#include "../pch.h"
 
 /**
  * Implamentation of a decision's Action enum.
@@ -37,7 +37,11 @@ class Decision {
 	// resets action to call and both amounts to 0.
 	void reset() noexcept;
 	// resets the members that needs to be reset before every turn.
-	inline void preTurn() noexcept { m_made = false; }
+	inline void preTurn() noexcept {
+#if DEBUG
+		m_made = false;
+#endif
+	}
 	// changes the decision manually (without changing previous amount)
 	inline void changeDecision(Action action) noexcept { m_action = action; }
 	// changes the decision manually (without changing previous amount)

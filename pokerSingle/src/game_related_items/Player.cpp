@@ -119,7 +119,7 @@ void Player::takeChips(chips_t amount, bool allIn) {
 	m_chipsTaken = allIn ? amount : amount - m_latestDecision.getPreviousAmount();
 #if DEBUG
 	if (m_chipsTaken > m_chips)
-		throw std::logic_error("tried taking more chips than the player has");
+		assert("tried taking more chips than the player has");
 #endif
 	m_chips -= m_chipsTaken;
 }
