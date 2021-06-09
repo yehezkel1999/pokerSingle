@@ -1,7 +1,9 @@
+
+#include "../../pch.h"
+
 #ifndef CARD_H_
 #define CARD_H_
 
-#include "../pch.h"
 
 /**
  * Implamentation of a card symbol enum.

@@ -2,14 +2,13 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#include "../Flags.h"
+#include "../../pch.h"
+#include "../general/Flags.h"
 
 #include "../card_related_items/Hand.h"
 #include "../card_related_items/HandAttempt.h"
 #include "Decision.h"
 #include "../card_related_items/Table.h"
-#include <string>
-#include <memory>
 
 enum class PlayerState {
 	playing, folded, broke

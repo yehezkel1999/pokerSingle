@@ -1,4 +1,5 @@
 
+#include "pch.h"
 #include "random.h"
 
 random::random() { // will only be called once

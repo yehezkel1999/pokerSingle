@@ -2,8 +2,8 @@
 #ifndef DECISION_H_
 #define DECISION_H_
 
-#include "../Flags.h"
-#include "../pch.h"
+#include "../../pch.h"
+#include "../general/Flags.h"
 
 /**
  * Implamentation of a decision's Action enum.

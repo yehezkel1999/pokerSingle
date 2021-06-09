@@ -2,8 +2,8 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
-#include "../Flags.h"
-#include <iostream>
+#include "../../pch.h"
+#include "../general/Flags.h"
 
 /**
  * Static class func.

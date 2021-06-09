@@ -1,7 +1,8 @@
 
+#include "pch.h"
 #include "HandAttempt.h"
 
-#include "../Flags.h"
+#include "../general/Flags.h"
 #include "../tools/Functions.h"
 
 HandAttempt::HandAttempt() noexcept

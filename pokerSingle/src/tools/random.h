@@ -2,11 +2,7 @@
 #ifndef RANDOM_H_
 #define RANDOM_H_
 
-#include <ctime>
-#include <iostream>
-#include <vector>
-#include <memory>
-
+#include "../../pch.h"
 
 /**
  * Singleton class random, as only one instance is needed.

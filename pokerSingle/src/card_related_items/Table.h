@@ -3,7 +3,6 @@
 #define TABLE_H_
 
 #include "Deck.h"
-#include <memory>
 
 
 /**

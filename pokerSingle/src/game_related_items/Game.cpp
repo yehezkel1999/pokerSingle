@@ -1,12 +1,11 @@
 
+#include "pch.h"
 #include "Game.h"
 
-#include "../Flags.h"
 #include "../tools/random.h"
 #include "../players/Bot.h"
 #include "../players/ConsolePlayer.h"
 #include "../tools/Functions.h"
-#include <fstream>
 
 
 Game::Game(size_type playerAmount, bool onlyBots)

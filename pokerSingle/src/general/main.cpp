@@ -2,12 +2,12 @@
 // pokerSingle.cpp : Defines the entry point for the console application.
 //
 
-#define SIZE 5
+#include "pch.h"
 
-#include "game_related_items/Game.h"
-#include "tools/Functions.h"
-#include "tools/random.h"
-#include "players/Bot.h"
+#include "../game_related_items/Game.h"
+#include "../tools/Functions.h"
+#include "../tools/random.h"
+#include "../players/Bot.h"
 
 
 void testDeck() {
@@ -36,14 +36,15 @@ void testDeck() {
 }
 void testCalculations() {
 	Card *cards;
+	constexpr int size = 5;
 
-	cards = new Card[SIZE];
+	cards = new Card[size];
 	cards[0] = Card(1, Symbol::diamond);
 	cards[1] = Card(13, Symbol::diamond);
 	cards[2] = Card(12, Symbol::diamond);
 	cards[3] = Card(11, Symbol::diamond);
 	cards[4] = Card(10, Symbol::diamond);
-	func::sort(cards, SIZE);
+	func::sort(cards, size);
 
 	HandAttempt h1(cards);
 	std::cout << h1 << std::endl << std::endl;
@@ -53,7 +54,7 @@ void testCalculations() {
 	cards[2] = Card(12, Symbol::diamond);
 	cards[3] = Card(11, Symbol::diamond);
 	cards[4] = Card(10, Symbol::diamond);
-	func::sort(cards, SIZE);
+	func::sort(cards, size);
 
 	HandAttempt h2(cards);
 	std::cout << h2 << std::endl << std::endl;

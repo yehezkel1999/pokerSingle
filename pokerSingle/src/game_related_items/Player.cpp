@@ -1,9 +1,10 @@
 
+#include "pch.h"
 #include "Player.h"
 #include "../card_related_items/Table.h"
 #include "../tools/Functions.h"
 
-#include "../Flags.h"
+#include "../general/Flags.h"
 
 id_t Player::s_ids = 0;
 

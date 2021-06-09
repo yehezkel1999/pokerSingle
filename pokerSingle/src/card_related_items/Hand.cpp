@@ -1,6 +1,7 @@
 
+#include "pch.h"
 #include "Hand.h"
-#include "../Flags.h"
+#include "../general/Flags.h"
 
 
 Hand::Hand() noexcept

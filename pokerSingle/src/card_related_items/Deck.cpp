@@ -1,9 +1,10 @@
 
+#include "pch.h"
 #include "Deck.h"
 #include "../tools/CustomExceptions.h"
 #include "../tools/random.h"
 
-#include "../Flags.h"
+#include "../general/Flags.h"
 
 
 Deck::Deck() 

@@ -2,8 +2,7 @@
 #ifndef POT_H_
 #define POT_H_
 
-#include <vector>
-#include <memory>
+#include "../../pch.h"
 #include "Player.h"
 
 enum class PotState { 

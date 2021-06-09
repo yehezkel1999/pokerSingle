@@ -1,4 +1,5 @@
 
+#include "pch.h"
 #include "Card.h"
 
 #include "../tools/CustomExceptions.h"
