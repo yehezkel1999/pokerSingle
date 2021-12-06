@@ -60,9 +60,9 @@ template <typename T> inline
 void random::randomize(T *arr, int size){
 	int randomNum;
 	for (int i = size - 1; i > 0; i--) {
-		randomNum = get().iRandInt(0, i);
-		T temp(std::move(arr[i - 1]));
-		arr[i - 1] = std::move(arr[randomNum]);
+		randomNum = randInt(0, i - 1);
+		T temp(std::move(arr[i]));
+		arr[i] = std::move(arr[randomNum]);
 		arr[randomNum] = std::move(temp);
 	}
 }

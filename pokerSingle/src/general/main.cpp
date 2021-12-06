@@ -211,8 +211,5 @@ int main() {
 	
 	testGame();
 
-	int x;
-	std::cin >> x; // for exe pause
-
 	return 0;
 }
