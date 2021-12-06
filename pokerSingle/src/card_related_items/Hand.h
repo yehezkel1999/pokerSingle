@@ -50,7 +50,6 @@ class Hand
 	 *
 	 * @param one: the first card of the hand.
 	 * @param two: the second card of the hand.
-	 * @throw std::logic_error if this method is called while the hand already contains cards.
 	 */
 	void drawHand(const Card &one, const Card &two);
 	/**

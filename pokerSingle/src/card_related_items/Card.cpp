@@ -1,4 +1,5 @@
 
+#include "pch.h"
 #include "Card.h"
 
 #include "../tools/CustomExceptions.h"
@@ -10,9 +11,9 @@ Card::Card(const Card &other) noexcept
 Card::Card(int value, Symbol symbol) {
 #if DEBUG
 	if (value < 1)
-		throw invalid_card_value("card value too low");
+		assert("card value too low");
 	if (value > 13)
-		throw invalid_card_value("card value too high");
+		assert("card value too high");
 #endif
 	m_value = value;
 	m_symbol = symbol;
@@ -84,13 +85,13 @@ const char *Card::symbolToString() const {
 #endif
 	switch (m_symbol) {
 	case Symbol::club:
-		return "club";
+		return "Club";
 	case Symbol::heart:
-		return "heart";
+		return "Heart";
 	case Symbol::spade:
-		return "spade";
+		return "Spade";
 	case Symbol::diamond:
-		return "diamond";
+		return "Diamond";
 	}
 #if DEBUG
 	throw nullptr_exception("card is null");

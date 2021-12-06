@@ -1,5 +1,6 @@
 
-#include "../Flags.h"
+#include "pch.h"
+#include "../general/Flags.h"
 #include "PotsHandler.h"
 
 PotsHandler::PotsHandler() 
@@ -158,9 +159,9 @@ void PotsHandler::calcWinners(bool oneLeft) {
 std::ostream &operator<<(std::ostream &output, const PotsHandler &source) {
 #if !DEBUG
 	if (source.m_pots.size() == 1)
-		return output << "pot: " << source.m_pots.front().getAmount() << '$';
+		return output << "Pot: " << source.m_pots.front().getAmount() << '$';
 #endif
-	output << "pots: " << std::endl;
+	output << "Pots: " << std::endl;
 	auto it = source.m_pots.begin();
 	for (; it != source.m_pots.end() - 1; it++)
 		output << *it << std::endl;

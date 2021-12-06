@@ -2,11 +2,7 @@
 #ifndef RANDOM_H_
 #define RANDOM_H_
 
-#include <ctime>
-#include <iostream>
-#include <vector>
-#include <memory>
-
+#include "../../pch.h"
 
 /**
  * Singleton class random, as only one instance is needed.
@@ -39,7 +35,7 @@ public:
 	 *
 	 * @return true or false with an equal chance.
 	 */
-	inline bool randBool() { return (bool)get().iRandInt(0, 1); }
+	inline static bool randBool() { return (bool)get().iRandInt(0, 1); }
 	/**
 	 * This function returns true depending on the inputed parameter, the bigger it is the
 	 * more likely this function is to return true.
@@ -64,9 +60,9 @@ template <typename T> inline
 void random::randomize(T *arr, int size){
 	int randomNum;
 	for (int i = size - 1; i > 0; i--) {
-		randomNum = get().iRandInt(0, i);
-		T temp(std::move(arr[i - 1]));
-		arr[i - 1] = std::move(arr[randomNum]);
+		randomNum = randInt(0, i - 1);
+		T temp(std::move(arr[i]));
+		arr[i] = std::move(arr[randomNum]);
 		arr[randomNum] = std::move(temp);
 	}
 }

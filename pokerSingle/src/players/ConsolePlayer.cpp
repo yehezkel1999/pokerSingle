@@ -1,3 +1,5 @@
+
+#include "pch.h"
 #include "ConsolePlayer.h"
 
 ConsolePlayer::ConsolePlayer(const ConsolePlayer &other)

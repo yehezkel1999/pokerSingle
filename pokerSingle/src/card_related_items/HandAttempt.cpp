@@ -1,7 +1,8 @@
 
+#include "pch.h"
 #include "HandAttempt.h"
 
-#include "../Flags.h"
+#include "../general/Flags.h"
 #include "../tools/Functions.h"
 
 HandAttempt::HandAttempt() noexcept
@@ -217,9 +218,9 @@ const char *HandAttempt::handRankToString() const noexcept {
 Card &HandAttempt::operator[](size_type place) {
 #if DEBUG
 	if (m_hashcode)
-		throw std::logic_error("attempted to call operator[] on an already calculated HandAttempt");
+		assert("attempted to call operator[] on an already calculated HandAttempt");
 	if (place < 0 || place > s_size - 1)
-		throw std::out_of_range("HandAttempt array has only 5 cells");
+		assert("HandAttempt array has only 5 cells");
 #endif
 	return m_cards[place];
 }

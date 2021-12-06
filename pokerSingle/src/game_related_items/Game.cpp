@@ -1,12 +1,11 @@
 
+#include "pch.h"
 #include "Game.h"
 
-#include "../Flags.h"
 #include "../tools/random.h"
 #include "../players/Bot.h"
 #include "../players/ConsolePlayer.h"
 #include "../tools/Functions.h"
-#include <fstream>
 
 
 Game::Game(size_type playerAmount, bool onlyBots)
@@ -177,7 +176,7 @@ Game::p_it Game::blindsAndCards(p_it firstPlayer) {
 			it->get()->bigBlind(); // makes decision manually for player (full call amount)
 #if DEBUG
 		if (it->get()->getChips() == 0)
-			throw std::logic_error("player should've been kicked before this match started");
+			assert("player should've been kicked before this match started");
 		else
 #endif
 		// if player.chips < small/big blind, decision was forcelly made for them, so 

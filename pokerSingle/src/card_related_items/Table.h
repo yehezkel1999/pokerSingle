@@ -3,7 +3,6 @@
 #define TABLE_H_
 
 #include "Deck.h"
-#include <memory>
 
 
 /**
@@ -117,8 +116,6 @@ public:
 	 * @param memoryLocation: the loocation the hand attempt will be stored. This pointer 
 	 * MUST be allocatted beforehand.
 	 * @return the best hand attempt the hand inputed produces (allocated memory).
-	 * @throw std::logic_error if an attempt to calculate a player's hand with no cards on 
-	 * the table is made.
 	 */
 	void calculateHand(const Hand &hand, std::shared_ptr<HandAttempt> handAttempt) const;
 

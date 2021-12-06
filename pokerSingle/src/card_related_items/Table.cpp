@@ -1,11 +1,12 @@
 
+#include "pch.h"
 #include "Table.h"
 
 #include "HandAttempt.h"
 #include "Hand.h"
 #include "../tools/Functions.h"
 
-#include "../Flags.h"
+#include "../general/Flags.h"
 
 Table::Table()
 	: m_deck(), m_table(), m_curAmount(0) {}
@@ -139,7 +140,7 @@ void Table::calcSevenCards(const Card *cards, std::shared_ptr<HandAttempt> handA
 void Table::calculateHand(const Hand& hand, std::shared_ptr<HandAttempt> handAttempt) const {
 #if DEBUG
 	if (!m_curAmount)
-		throw std::logic_error("attempted to calculate a player's hand with no cards on the m_table");
+		assert("attempted to calculate a player's hand with no cards on the table");
 #endif
 	size_type size = 2 + m_curAmount;
 	Card cards[7];

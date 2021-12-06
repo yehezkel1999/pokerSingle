@@ -1,6 +1,7 @@
 
+#include "pch.h"
 #include "Hand.h"
-#include "../Flags.h"
+#include "../general/Flags.h"
 
 
 Hand::Hand() noexcept
@@ -14,7 +15,7 @@ Hand::Hand(const Hand &other) noexcept
 void Hand::drawHand(const Card &one, const Card &two) {
 #if DEBUG
 	if (!m_one.isNull() || !m_two.isNull())
-		throw std::logic_error("attempted to draw cards to an existing hand");
+		assert("attempted to draw cards to an existing hand");
 #endif
 	m_one = one;
 	m_two = two;

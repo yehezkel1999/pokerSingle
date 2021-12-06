@@ -1,4 +1,5 @@
 
+#include "pch.h"
 #include "Bot.h"
 #include "../tools/random.h"
 

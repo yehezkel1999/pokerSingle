@@ -13,7 +13,6 @@
     <ClInclude Include="src\tools\CustomExceptions.h" />
     <ClInclude Include="src\game_related_items\Decision.h" />
     <ClInclude Include="src\card_related_items\Deck.h" />
-    <ClInclude Include="src\Flags.h" />
     <ClInclude Include="src\tools\Functions.h" />
     <ClInclude Include="src\game_related_items\Game.h" />
     <ClInclude Include="src\card_related_items\Hand.h" />
@@ -25,6 +24,8 @@
     <ClInclude Include="src\game_related_items\Pot.h" />
     <ClInclude Include="src\tools\sorted_vector.h" />
     <ClInclude Include="src\card_related_items\Table.h" />
+    <ClInclude Include="src\general\Flags.h" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\players\Bot.cpp" />
@@ -38,11 +39,12 @@
     <ClCompile Include="src\card_related_items\HandAttempt.cpp" />
     <ClCompile Include="src\tools\MemoryTracking.cpp" />
     <ClCompile Include="src\game_related_items\Player.cpp" />
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\game_related_items\PotsHandler.cpp" />
     <ClCompile Include="src\tools\random.cpp" />
     <ClCompile Include="src\game_related_items\Pot.cpp" />
     <ClCompile Include="src\card_related_items\Table.cpp" />
+    <ClCompile Include="src\general\main.cpp" />
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pokerSingle.rc">

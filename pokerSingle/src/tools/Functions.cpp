@@ -1,6 +1,6 @@
 
+#include "pch.h"
 #include "Functions.h"
-#include <string.h>
 
 void func::threeDigitsToOutput(std::ostream &output, chips_t digits) {
 	if (digits > 99) {

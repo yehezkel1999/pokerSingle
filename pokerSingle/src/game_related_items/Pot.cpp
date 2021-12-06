@@ -1,7 +1,8 @@
 
+#include "pch.h"
 #include "Pot.h"
 
-#include "../Flags.h"
+#include "../general/Flags.h"
 #include "../tools/Functions.h"
 
 
@@ -34,7 +35,7 @@ Pot::Pot(const Pot &other, p_ptr player, PotState state, chips_t amount) :
 	// this constructor is rached when someone cant call, so if the pot has no players in 
 	// it then something went wrong
 	if (m_eligible.empty())
-		throw std::logic_error("empty pot");
+		assert("empty pot");
 #endif
 
 	chips_t max = 0;
@@ -165,8 +166,7 @@ schips_t Pot::addToPot(p_ptr adder, chips_t amount) {
 		it = getOrPush(adder);
 
 	if (isOpen()) {
-		m_amount += amount; // add amount to pot
-		it->_amount += amount; // keep track that he contributed the amount
+		addAmountAndTrack(it, amount);
 		return 0;
 	}
 	// m_state == PotState::locked
@@ -179,9 +179,13 @@ schips_t Pot::addToPot(p_ptr adder, chips_t amount) {
 	return amount - contributed; // the remainder left from what was taken from the player's chips
 }
 void Pot::noCheckAdd(p_ptr adder, chips_t amount) {
-	getOrPush(adder)->_amount += amount;
-	m_amount += amount;
+	addAmountAndTrack(getOrPush(adder), amount);
 }
+void Pot::addAmountAndTrack(c_it it, chips_t amount) {
+	m_amount += amount; // add amount to pot
+	it->_amount += amount; // keep track that he contributed the amount
+}
+
 chips_t Pot::lockPot(p_ptr locker, chips_t amount) {
 	if (m_state != PotState::finished)
 		m_state = PotState::locked;
@@ -189,8 +193,7 @@ chips_t Pot::lockPot(p_ptr locker, chips_t amount) {
 	c_it it = getOrPush(locker);
 
 	// amount -= it->_player->latestChipsTaken(); ?
-	m_amount += amount; // add amount to pot
-	it->_amount += amount; // keep track that he contributed the amount
+	addAmountAndTrack(it, amount);
 
 	m_base = it->_amount;
 
@@ -224,7 +227,7 @@ void Pot::calcWinner(std::ostream &output) {
 		}
 #if DEBUG
 	if (winner == m_eligible.end())
-		throw std::logic_error("empty pot");
+		assert("empty pot");
 #endif
 
 	// calculate winner first so the highest hashcode will be known before going into the 
@@ -254,7 +257,7 @@ Player &Pot::oneLeft() {
 		if (!contributer._player->isFolded())
 			return *contributer._player;
 #if DEBUG
-	throw std::logic_error("oneLeft method called but there were no players left");
+	assert("oneLeft method called but there were no players left");
 #endif
 }
 chips_t Pot::winnerCount(const Player &winner) {
@@ -327,7 +330,7 @@ const char *Pot::stateToString() const {
 	return "null";
 }
 std::ostream &Pot::potDeclareName(std::ostream &output) const {
-	return m_id == 1 ? output << "the main pot" : output << "pot #" << m_id;
+	return m_id == 1 ? output << "The Main Pot" : output << "Pot #" << m_id;
 }
 std::ostream &operator<<(std::ostream &output, const Pot &source) {
 	source.potDeclareName(output) << ": ";

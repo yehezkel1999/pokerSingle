@@ -2,8 +2,8 @@
 #ifndef CUSTOM_EXCEPTIONS_H_
 #define CUSTOM_EXCEPTIONS_H_
 
-#include <iostream>
-#include "../Flags.h"
+#include "../../pch.h"
+#include "../general/Flags.h"
 
 #if DEBUG
 

@@ -1,12 +1,12 @@
 
-#include "../Flags.h"
+#include "../general/Flags.h"
 
 #if MEMORY_FLAG
 
 #ifndef MEMORY_TRACKING_H_
 #define MEMORY_TRACKING_H_
 
-#include <fstream>
+#include "../../pch.h"
 
 /**
  * Singleton struct as only one memory tracker (per program) is needed.

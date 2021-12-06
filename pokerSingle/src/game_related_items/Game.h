@@ -2,9 +2,9 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include "../Flags.h"
-#include <vector>
-#include <memory>
+#include "../../pch.h"
+#include "../general/Flags.h"
+
 #include "Player.h"
 #include "../card_related_items/Table.h"
 #include "PotsHandler.h"

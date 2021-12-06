@@ -2,9 +2,7 @@
 #ifndef SORTED_VECTOR_H_
 #define SORTED_VECTOR_H_
 
-#include <vector>
-#include <iostream>
-#include <stdexcept>
+#include "../../pch.h"
 
 // if there's an array implementation then insertion is already costly and needs to move
 // elements to the right regardless
@@ -34,7 +32,7 @@ public:
 	sorted_vector();
 	sorted_vector(size_type amount);
 	sorted_vector(const sorted_vector &other);
-	sorted_vector(sorted_vector &&other);
+	sorted_vector(sorted_vector &&other) noexcept;
 
 	size_type capacity() const { return m_data.capacity(); }
 	size_type size() const { return m_data.size(); }
@@ -60,9 +58,11 @@ public:
 	//template <typename... Args>
 	//value_type &emplace(Args&&... args);
 
-	value_type &operator[](size_type place) const { return m_data[place]; }
+	value_type &operator[](size_type place) { return m_data[place]; }
+	const value_type &operator[](size_type place) const { return m_data[place]; }
+
 	sorted_vector &operator=(const sorted_vector &other);
-	sorted_vector &operator=(sorted_vector &&other);
+	sorted_vector &operator=(sorted_vector &&other) noexcept;
 
 	// iterators:
 
@@ -92,7 +92,7 @@ sorted_vector<T>::sorted_vector(size_type amount) : m_data(amount) {}
 template<typename T> inline
 sorted_vector<T>::sorted_vector(const sorted_vector &other) : m_data(other.m_data) {}
 template<typename T> inline
-sorted_vector<T>::sorted_vector(sorted_vector &&other) : m_data(std::move(other.m_data)) {}
+sorted_vector<T>::sorted_vector(sorted_vector &&other) noexcept : m_data(std::move(other.m_data)) {}
 
 template<typename T> inline typename
 sorted_vector<T>::size_type sorted_vector<T>::move_right_until(const value_type &value) {
@@ -242,7 +242,7 @@ sorted_vector<T> &sorted_vector<T>::operator=(const sorted_vector &other) {
 	return *this;
 }
 template<typename T> inline
-sorted_vector<T> &sorted_vector<T>::operator=(sorted_vector &&other) {
+sorted_vector<T> &sorted_vector<T>::operator=(sorted_vector &&other) noexcept {
 	if (this == &other)
 		return *this;
 
