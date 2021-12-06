@@ -85,13 +85,13 @@ const char *Card::symbolToString() const {
 #endif
 	switch (m_symbol) {
 	case Symbol::club:
-		return "club";
+		return "Club";
 	case Symbol::heart:
-		return "heart";
+		return "Heart";
 	case Symbol::spade:
-		return "spade";
+		return "Spade";
 	case Symbol::diamond:
-		return "diamond";
+		return "Diamond";
 	}
 #if DEBUG
 	throw nullptr_exception("card is null");

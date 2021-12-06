@@ -11,12 +11,12 @@
 #if DEBUG
 
 #define JUST_BOTS 1
-#define MEMORY_FLAG 0
-#define OUTPUT_FILE_NAME "log\\output.txt"
+#define MEMORY_FLAG 1
+#define OUTPUT_FILE_NAME "log\\output.log"
 
 #if MEMORY_FLAG
-#define MEMORY_FILE_NAME "log\\poker_memory_usage.txt"
-#include "MemoryTracking.h"
+#define MEMORY_FILE_NAME "log\\poker_memory_usage.log"
+#include "..\tools\MemoryTracking.h"
 #endif // MEMORY_FLAG
 
 #endif // DEBUG

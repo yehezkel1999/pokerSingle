@@ -166,8 +166,7 @@ schips_t Pot::addToPot(p_ptr adder, chips_t amount) {
 		it = getOrPush(adder);
 
 	if (isOpen()) {
-		m_amount += amount; // add amount to pot
-		it->_amount += amount; // keep track that he contributed the amount
+		addAmountAndTrack(it, amount);
 		return 0;
 	}
 	// m_state == PotState::locked
@@ -180,9 +179,13 @@ schips_t Pot::addToPot(p_ptr adder, chips_t amount) {
 	return amount - contributed; // the remainder left from what was taken from the player's chips
 }
 void Pot::noCheckAdd(p_ptr adder, chips_t amount) {
-	getOrPush(adder)->_amount += amount;
-	m_amount += amount;
+	addAmountAndTrack(getOrPush(adder), amount);
 }
+void Pot::addAmountAndTrack(c_it it, chips_t amount) {
+	m_amount += amount; // add amount to pot
+	it->_amount += amount; // keep track that he contributed the amount
+}
+
 chips_t Pot::lockPot(p_ptr locker, chips_t amount) {
 	if (m_state != PotState::finished)
 		m_state = PotState::locked;
@@ -190,8 +193,7 @@ chips_t Pot::lockPot(p_ptr locker, chips_t amount) {
 	c_it it = getOrPush(locker);
 
 	// amount -= it->_player->latestChipsTaken(); ?
-	m_amount += amount; // add amount to pot
-	it->_amount += amount; // keep track that he contributed the amount
+	addAmountAndTrack(it, amount);
 
 	m_base = it->_amount;
 

@@ -88,6 +88,11 @@ private: // member variables
 	 */
 	void noCheckAdd(p_ptr adder, chips_t amount);
 	/**
+	 * adds the given amount to the pot, and tracks which player added it to the pot, 
+	 * no checks are made.
+	 */
+	void addAmountAndTrack(c_it it, chips_t amount);
+	/**
 	 * Locks the pot. The pot's base will be the old base plus the locking player already
 	 * contributed amount plus the inputted amount.
 	 *
@@ -124,7 +129,7 @@ public:
 	 * pot's capacity minus one.
 	 *
 	 * @param other: the last active pot.
-	 * @param player: the player that won't be in this pot.
+	 * @param player: the player that will be in this pot.
 	 * @param amount: the amount this player contributed to this pot.
 	 * @param reason: the player that because of him this pot was opened.
 	 */
