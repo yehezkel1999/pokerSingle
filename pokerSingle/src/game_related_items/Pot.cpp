@@ -330,7 +330,7 @@ const char *Pot::stateToString() const {
 	return "null";
 }
 std::ostream &Pot::potDeclareName(std::ostream &output) const {
-	return m_id == 1 ? output << "Main Pot" : output << "Pot #" << m_id;
+	return m_id == 1 ? output << "The Main Pot" : output << "Pot #" << m_id;
 }
 std::ostream &operator<<(std::ostream &output, const Pot &source) {
 	source.potDeclareName(output) << ": ";
