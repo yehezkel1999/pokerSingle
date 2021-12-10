@@ -4,6 +4,7 @@
 
 #include "../tools/sorted_vector.h"
 #include "Pot.h"
+#include "pch.h"
 
 /****************************************************************************************
  * 
@@ -105,6 +106,8 @@ private: // member variables
 	 * @returns true if a new pot was opened, false otherwise.
 	 */
 	bool lockPot(pot_it it, p_ptr locker, chips_t amount, bool allIn = false);
+	void declareWinner(const std::pair<std::pair<p_ptr, chips_t>, std::vector<pot_it>> &winnerInfo);
+	void declarePotMultipleWinners(const Pot &pot, const std::vector<std::pair<p_ptr, chips_t>> &winners);
 public:
 
 	PotsHandler();
@@ -122,7 +125,7 @@ public:
 	void postStage();
 
 	bool addToPots(p_ptr player, chips_t amount, bool cantCall = false);
-	void calcWinners(bool oneLeft);
+	void declareWinnersAndDistributeChips();
 
 	friend std::ostream &operator<<(std::ostream &output, const PotsHandler &source);
 

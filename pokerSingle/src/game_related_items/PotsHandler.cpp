@@ -1,7 +1,9 @@
 
 #include "pch.h"
-#include "../general/Flags.h"
 #include "PotsHandler.h"
+
+#include "../general/Flags.h"
+#include "../tools/Functions.h"
 
 PotsHandler::PotsHandler() 
 	: m_output(nullptr), m_pots(), m_latest(nullptr), m_reason() {}
@@ -149,11 +151,77 @@ bool PotsHandler::addToPots(p_ptr player, chips_t amount, bool cantCall) {
 	}
 	return false;
 }
-void PotsHandler::calcWinners(bool oneLeft) {
-	for (Pot &pot : m_pots) {
-		pot.calcWinner(*m_output);
-		*m_output << std::endl << std::endl;
+
+void PotsHandler::declareWinnersAndDistributeChips() {
+	auto &output = *m_output;
+	std::vector<std::pair<std::pair<p_ptr, chips_t>, std::vector<pot_it>>> winnersOfPots; // relates players to pots they won
+
+	output << std::endl;
+	for (auto it = m_pots.begin(); it != m_pots.end(); it++) {
+		const auto &potWinners = it->calcWinners();
+
+		if (potWinners.size() > 1) {
+			declarePotMultipleWinners(*it, potWinners);
+			std::for_each(potWinners.begin(), potWinners.end(), [] (auto &winPair) 
+				{ winPair.first->addChips(winPair.second); }); // add the players' winnings
+			continue;
+		}
+		#if DEBUG
+		if (potWinners.empty()) assert("pot has no winner");
+		#endif // DEBUG
+
+		// beyond to point the pot only has one winner
+		auto &winnerWithAmountPair = potWinners.front();
+		auto winnerIt = winnersOfPots.begin();
+		for (; winnerIt != winnersOfPots.end(); winnerIt++)
+			if (winnerIt->first.first.get() == winnerWithAmountPair.first.get())
+				break;
+
+		if (winnerIt != winnersOfPots.end()) { // player already won a pot
+			winnerIt->first.second += winnerWithAmountPair.second; // adding the current pot winnings to the players winnings
+			winnerIt->second.push_back(it); // adding the pot to the list of pots the player won
+		}
+		else // player is a new winner
+			winnersOfPots.emplace_back(winnerWithAmountPair, std::vector<pot_it>(1, it));
 	}
+	std::for_each(winnersOfPots.begin(), winnersOfPots.end(), [this, &output] (auto &winnerInfo) {
+		declareWinner(winnerInfo);
+		winnerInfo.first.first->addChips(winnerInfo.first.second);
+		output << std::endl << std::endl; });
+}
+void PotsHandler::declareWinner(const std::pair<std::pair<p_ptr, chips_t>, std::vector<pot_it>> &winnerInfo) {
+	auto &output = *m_output;
+	auto &winner = winnerInfo.first.first;
+
+	// pots:
+	output << "The winner of ";
+	auto last = winnerInfo.second.end() - 1;
+	std::for_each(winnerInfo.second.begin(), winnerInfo.second.end(), [last, &output] (pot_it potIt) {
+		potIt->potDeclareName(output); 
+		output << ((potIt == *last) ? "" : (potIt == *(last - 1)) ? " and " : ", ");
+		});
+
+	// winner:
+	output << " is (wins ";
+	func::commas(output, winnerInfo.first.second);
+	*m_output << "$): ";
+	output << winner->getName() << " | cards: " << winner->getHand() << " | with the hand: " << std::endl
+		<< winner->getBestHand() << std::endl;
+}
+void PotsHandler::declarePotMultipleWinners(const Pot &pot, const std::vector<std::pair<p_ptr, chips_t>> &winners) {
+	auto &output = *m_output;
+
+	output << "The winners of ";
+	pot.potDeclareName(output) << " (";
+	func::commas(output, winners.front().second) << "$ each) are: ";
+
+	for (auto &winnerPair : winners) {
+		output << winnerPair.first->getName();
+		if (&winnerPair != &winners.back()) // if not last
+			output << ", ";
+	}
+
+	output << std::endl << "with the hand: " << winners.front().first->getBestHand();
 }
 
 std::ostream &operator<<(std::ostream &output, const PotsHandler &source) {

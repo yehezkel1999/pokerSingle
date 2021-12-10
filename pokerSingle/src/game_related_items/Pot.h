@@ -15,6 +15,7 @@ enum class PotState {
 struct Contributer {
 public:
 	using p_ptr = std::shared_ptr<Player>; // shared pointer to a Player.
+	using cp_ptr = std::shared_ptr<const Player>; // shared pointer to a const Player.
 public:
 	p_ptr _player; // the player
 	chips_t _amount; // the amount this player has contributed to this pot.
@@ -37,7 +38,9 @@ class Pot {
 public: // 'using's
 
 	using p_ptr = Contributer::p_ptr; // shared pointer to a Player.
+	using cp_ptr = Contributer::cp_ptr; // shared pointer to a const Player.
 	using p_vec = std::vector<p_ptr>; // vector of shared pointers to a Player.
+	using cp_vec = std::vector<cp_ptr>; // vector of shared pointers to a const Player.
 	using p_it = p_vec::iterator; // iterator for a vector of shared pointers to a Player.
 	using c_vec = std::vector<Contributer>;	// vector of Contributers.
 	using c_it = c_vec::iterator; // iterator for a vector of type Contributer.
@@ -103,12 +106,12 @@ private: // member variables
 	 */
 	chips_t lockPot(p_ptr locker, chips_t amount);
 
-	void calcWinner(std::ostream &output);
+	std::vector<std::pair<p_ptr, chips_t>> calcWinners();
 	bool oneNonFoldedLeft() const;
-	Player &oneLeft();
+	p_ptr oneLeft();
+	bool isMoreThanOneWinner(const Player &winner);
 	chips_t winnerCount(const Player &winner);
-	bool moreThanOneWinner(std::ostream &output, const Player &winner);
-	void declareWinner(std::ostream &output, Player &winner, bool oneNonFolded = false);
+	std::vector<std::pair<p_ptr, chips_t>> moreThanOneWinner(const Player &winner);
 	std::ostream &potDeclareName(std::ostream &output) const;
 public:
 
@@ -164,7 +167,7 @@ public:
 	// @returns a const iterator to the first non folded player that contributed to the pot.
 	// if there is non returns end().
 	cc_it firstNonFolded() const;
-	chips_t nonFolded() const;
+	unsigned int nonFolded() const;
 
 	/**
 	 * Operator for this pot, checks if the other pot has the same values. For the pots

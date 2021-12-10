@@ -293,7 +293,7 @@ void Game::postMatch(bool interrupted) {
 	if (interrupted)
 		interruptedMatch();
 
-	m_potHandler.calcWinners(interrupted);
+	m_potHandler.declareWinnersAndDistributeChips();
 
 	playersToStream(*m_output);
 

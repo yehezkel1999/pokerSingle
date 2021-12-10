@@ -138,8 +138,8 @@ Pot::cc_it Pot::firstNonFolded() const {
 			return it;
 	return m_eligible.end();
 }
-chips_t Pot::nonFolded() const {
-	chips_t count = 0;
+unsigned int Pot::nonFolded() const {
+	unsigned int count = 0;
 	for (const Contributer &constributer : m_eligible)
 		if (!constributer._player->isFolded())
 			count++;
@@ -152,18 +152,26 @@ schips_t Pot::addToPot(p_ptr adder, chips_t amount) {
 
 	c_it it = m_eligible.end();
 
-
 	if (m_state == PotState::start)
-		if (m_eligible.empty() || adder != firstNonFolded()->_player) {
+		if (!m_eligible.empty() && (adder == firstNonFolded()->_player || exists(adder) != m_eligible.end())) {
+			// all the players were added, no players need to be added to this pot
+			m_state = PotState::open;
+		}
+		else {
 			m_eligible.push_back(Contributer(adder));
 			it = m_eligible.end() - 1;
 		}
-		else
-			m_state = PotState::open;
 
 	// if the pot's open then it will never push_back the player, only when the pot's locked
 	if (it == m_eligible.end())
 		it = getOrPush(adder);
+
+#if DEBUG
+	std::unordered_set<p_ptr> set;
+	for (auto &contributer : m_eligible)
+		assert(set.insert(contributer._player).second && "the same player was inserted twice to the same pot");
+#endif // DEBUG
+
 
 	if (isOpen()) {
 		addAmountAndTrack(it, amount);
@@ -206,11 +214,13 @@ chips_t Pot::lockPot(p_ptr locker, chips_t amount) {
 	return sum;
 }
 
-void Pot::calcWinner(std::ostream &output) {
+std::vector<std::pair<Pot::p_ptr, chips_t>> Pot::calcWinners() {
+	std::vector<std::pair<p_ptr, chips_t>> winners;
+
 	// will happen a lot so this saves time
 	if (oneNonFoldedLeft()) {
-		declareWinner(output, oneLeft(), true);
-		return;
+		winners.emplace_back(oneLeft(), m_amount);
+		return winners;
 	}
 
 	for (Contributer &contributer : m_eligible) // calculate every unfolded player's hand
@@ -236,11 +246,11 @@ void Pot::calcWinner(std::ostream &output) {
 		if (!it->_player->isFolded() && it->_player->getBestHand() > winner->_player->getBestHand())
 			winner = it;
 
-	output << std::endl;
-	if (moreThanOneWinner(output, *winner->_player))
-		return;
+	if (isMoreThanOneWinner(*winner->_player))
+		return moreThanOneWinner(*winner->_player);
 
-	declareWinner(output, *winner->_player);
+	winners.emplace_back(winner->_player, m_amount);
+	return winners;
 }
 bool Pot::oneNonFoldedLeft() const {
 	chips_t count = 0;
@@ -252,13 +262,20 @@ bool Pot::oneNonFoldedLeft() const {
 	}
 	return true;
 }
-Player &Pot::oneLeft() {
+Pot::p_ptr Pot::oneLeft() {
 	for (Contributer &contributer : m_eligible)
 		if (!contributer._player->isFolded())
-			return *contributer._player;
+			return contributer._player;
 #if DEBUG
 	assert("oneLeft method called but there were no players left");
 #endif
+}
+bool Pot::isMoreThanOneWinner(const Player &winner) {
+	for (Contributer &contributer : m_eligible)
+		if (contributer._player.get() != &winner && 
+			contributer._player->getBestHand() == winner.getBestHand())
+			return true;
+	return false;
 }
 chips_t Pot::winnerCount(const Player &winner) {
 	chips_t count = 0;
@@ -267,47 +284,30 @@ chips_t Pot::winnerCount(const Player &winner) {
 			count++;
 	return count;
 }
-bool Pot::moreThanOneWinner(std::ostream &output, const Player &winner) {
-	chips_t count = winnerCount(winner);
-
-	if (count < 2)
-		return false;
+std::vector<std::pair<Pot::p_ptr, chips_t>> 
+Pot::moreThanOneWinner(const Player &winner) {
+	std::vector<std::pair<p_ptr, chips_t>> winners;
+	chips_t winnersAmount = winnerCount(winner);
+	winners.reserve(winnersAmount);
 
 	chips_t amount = m_amount; // so when this pot is printed the amount will be intact
-	chips_t winnings = (chips_t) ((float) m_amount / (float) count);
-	output << "The winners of ";
-	potDeclareName(output) << " (";
-	func::commas(output, winnings) << "$ each) are: ";
+	chips_t winnings = (chips_t) ((float) m_amount / (float) winnersAmount);
+
 	for (Contributer &contributer : m_eligible)
 		if (contributer._player->getBestHand() == winner.getBestHand()) {
-			output << contributer._player.get()->getName();
-			if (count == 1) { // the last winner
-				contributer._player->addChips(amount); // so all the chips would actually get distributed
+
+			if (winnersAmount == 1) { // the last winner
+				// adding amount not winnings, so all the chips would actually get distributed
+				winners.emplace_back(contributer._player, amount);
 				break;
 			}
-			output << ", ";
 
 			amount -= winnings;
-			contributer._player->addChips(winnings);
-			count--;
+			winners.emplace_back(contributer._player, winnings);
+			winnersAmount--;
 		}
-	output << std::endl << "with the hand: " << winner.getBestHand();
-	return true;
-}
-void Pot::declareWinner(std::ostream &output, Player &winner, bool oneNonFolded) {
-	output << "The winner of ";
-	potDeclareName(output) << " is (wins ";
-	func::commas(output, m_amount);
-	output << "$): ";
-	output << winner.getName();
 
-	if (oneNonFolded)
-		output << ", as this is the only non folded player left in the pot";
-	else
-		output << " | cards: "<< winner.getHand() << " | with the hand: " << std::endl 
-		<< winner.getBestHand();
-
-	winner.addChips(m_amount);
+	return winners;
 }
 
 bool Pot::operator<(const Pot &other) const {
