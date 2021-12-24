@@ -10,10 +10,8 @@ Card::Card(const Card &other) noexcept
 	: m_value(other.m_value), m_symbol(other.m_symbol) {}
 Card::Card(int value, Symbol symbol) {
 #if DEBUG
-	if (value < 1)
-		assert("card value too low");
-	if (value > 13)
-		assert("card value too high");
+	assert(value > 0 && "card value too low");
+	assert(value < 14 && "card value too high");
 #endif
 	m_value = value;
 	m_symbol = symbol;

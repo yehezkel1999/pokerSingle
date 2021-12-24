@@ -217,10 +217,8 @@ const char *HandAttempt::handRankToString() const noexcept {
 
 Card &HandAttempt::operator[](size_type place) {
 #if DEBUG
-	if (m_hashcode)
-		assert("attempted to call operator[] on an already calculated HandAttempt");
-	if (place < 0 || place > s_size - 1)
-		assert("HandAttempt array has only 5 cells");
+	assert(!m_hashcode && "attempted to call operator[] on an already calculated HandAttempt");
+	assert(place >= 0 && place < s_size && "HandAttempt array has only 5 cells");
 #endif
 	return m_cards[place];
 }
