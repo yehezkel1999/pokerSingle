@@ -13,7 +13,10 @@
 // STL
 #include <memory>
 #include <vector>
+#include <unordered_set>
 #include <string>
+#include <algorithm>
+#include <array>
 
 // misc
 #include <ctime>

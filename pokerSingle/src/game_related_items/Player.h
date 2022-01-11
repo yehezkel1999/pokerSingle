@@ -110,7 +110,7 @@ public:
 	virtual Player &Player::operator=(const Player &other);
 	virtual Player &Player::operator=(Player &&other) noexcept;
 
-	friend class Pot;
+	friend class PotsHandler;
 	friend class Game;
 	friend std::ostream &operator<<(std::ostream &output, const Player &source);
 

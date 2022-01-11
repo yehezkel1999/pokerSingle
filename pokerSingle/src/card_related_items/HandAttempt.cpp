@@ -29,7 +29,7 @@ void HandAttempt::highCardHandle() {
 }
 void HandAttempt::twoPairHandle() {
 	Card card;
-	for (signed_size_type i = s_size - 1; i >= 0; i--) {
+	for (signed_size_type i = s_size - 1; i > 0; i--) {
 		card = m_cards[i];
 		if (card.getValue() == m_cards[i - 1].getValue()) { // the card is one of the pairs
 			if (i == s_size - 1 || i == s_size - 2) // has to be one of these since the sequence is in order
@@ -133,8 +133,8 @@ void HandAttempt::addHash(unsigned int amount, Relevance relevance) noexcept {
 }
 
 void HandAttempt::calcFiveCards() {
-	if (!func::isSorted(m_cards, s_size)) // if it isn't sorted then sort it
-		func::sort(m_cards, s_size);
+	if (!std::is_sorted(begin(), end())) // if it isn't sorted then sort it
+		std::sort(begin(), end());
 
 	m_handRank = HandRank::highCard;
 	m_hashcode = 0;
@@ -217,10 +217,8 @@ const char *HandAttempt::handRankToString() const noexcept {
 
 Card &HandAttempt::operator[](size_type place) {
 #if DEBUG
-	if (m_hashcode)
-		assert("attempted to call operator[] on an already calculated HandAttempt");
-	if (place < 0 || place > s_size - 1)
-		assert("HandAttempt array has only 5 cells");
+	assert(!m_hashcode && "attempted to call operator[] on an already calculated HandAttempt");
+	assert(place >= 0 && place < s_size && "HandAttempt array has only 5 cells");
 #endif
 	return m_cards[place];
 }

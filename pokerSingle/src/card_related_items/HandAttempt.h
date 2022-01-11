@@ -2,6 +2,7 @@
 #ifndef HAND_ATTEMPT_H_
 #define HAND_ATTEMPT_H_
 
+#include "pch.h"
 #include "Card.h"
 
 /**
@@ -51,12 +52,17 @@ enum class HandRank {
 class HandAttempt {
 public:
 	using size_type = unsigned short;
+
+	// A hand attempt can only have 5 cards, no more no less (standard poker rules).
+	static const size_type s_size = 5;
+
 	using signed_size_type = signed short;
-	using iterator = Card *;
-	using const_iterator = const Card *;
+	using card_array = std::array<Card, s_size>;
+	using iterator = card_array::iterator;
+	using const_iterator = card_array::const_iterator;
 
 private:
-	Card m_cards[5]; // The sequence of cards that is being calculated and ranked.
+	card_array m_cards; // The sequence of cards that is being calculated and ranked.
 
 	HandRank m_handRank; // The rank given to the hand attempt (the type of poker hand).
 	// The hashcode given to the hand attempt accourding to each card and its relevance.
@@ -76,12 +82,9 @@ private:
 	inline void addHash(const Card &card, Relevance relevance) noexcept
 	{ addHash(Card::getOpposingValue(card.getValue()), relevance); }
 
-	inline iterator begin() { return &m_cards[0]; }
-	inline iterator end() { return &m_cards[s_size]; }
+	inline iterator begin() { return m_cards.begin(); }
+	inline iterator end() { return m_cards.end(); }
 public:
-	// A hand attempt can only have 5 cards, no more no less (standard poker rules).
-	static const size_type s_size = 5;
-
 	/**
 	 * Defualt constructor for HandAttempt class, allocates 5 cards, but leaves the cells 
 	 * blank. The memory gets deleted when the object goes out of scope or deleted. all 
@@ -214,8 +217,8 @@ public:
 	*/
 	HandAttempt &operator=(const HandAttempt &other) noexcept;
 
-	inline const_iterator begin() const { return &m_cards[0]; }
-	inline const_iterator end() const { return &m_cards[s_size]; }
+	inline const_iterator begin() const { return begin(); }
+	inline const_iterator end() const { return end(); }
 
 	/**
 	 * Overloaded operator << of std::ostream. Allows std::ostream to accept a HandAttempt 

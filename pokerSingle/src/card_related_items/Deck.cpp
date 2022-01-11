@@ -38,8 +38,7 @@ void Deck::shuffle() {
 
 const Card Deck::takeTopCard() {
 #if DEBUG
-	if (isEmpty())
-		assert("cant take card, deck empty");
+	assert(!isEmpty() && "cant take card, deck empty");
 #endif
 	Card card(m_deck[m_curAmount - 1]);
 	m_deck[m_curAmount - 1] = Card();
@@ -49,8 +48,7 @@ const Card Deck::takeTopCard() {
 }
 const Card Deck::takeRandomCard() {
 #if DEBUG
-	if (isEmpty())
-		assert("cant take card, m_deck empty");
+	assert(!isEmpty() && "cant take card, m_deck empty");
 #endif
 	size_type randomNum = random::randInt(0, m_curAmount);
 	Card card = m_deck[randomNum];
@@ -64,9 +62,9 @@ const Card Deck::takeRandomCard() {
 	return card;
 }
 void Deck::placeCardBottom(const Card &card) {
-	if (isFull())
-		assert("cant place card, m_deck full");
-
+#if DEBUG
+	assert(!isFull() && "cant place card, m_deck full");
+#endif
 	for (signed_size_type i = m_curAmount; i >= 0; i--)
 		m_deck[i] = m_deck[i - 1];
 
@@ -75,8 +73,7 @@ void Deck::placeCardBottom(const Card &card) {
 }
 void Deck::placeCardRandom(const Card &card) {
 #if DEBUG
-	if (isFull())
-		assert("cant place card, m_deck full");
+	assert(!isFull() && "cant place card, m_deck full");
 #endif
 	size_type randomNum = random::randInt(0, m_curAmount);
 
@@ -110,8 +107,10 @@ Deck &Deck::operator=(Deck &&other) noexcept {
 	return *this;
 }
 Deck &Deck::operator-=(size_type num) {
-	if (!canTake(num))
-		assert("cant throw this amount of cards, m_deck would be empty");
+#if DEBUG
+	assert(canTake(num) && "cant throw this amount of cards, m_deck would be empty");
+#endif // DEBUG
+
 	for (size_type i = 0; i < num; i++)
 		takeTopCard();
 	m_curAmount -= num;

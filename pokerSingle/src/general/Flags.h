@@ -11,7 +11,7 @@
 #if DEBUG
 
 #define JUST_BOTS 1
-#define MEMORY_FLAG 1
+#define MEMORY_FLAG 0
 #define OUTPUT_FILE_NAME "log\\output.log"
 
 #if MEMORY_FLAG

@@ -14,8 +14,7 @@ Hand::Hand(const Hand &other) noexcept
 
 void Hand::drawHand(const Card &one, const Card &two) {
 #if DEBUG
-	if (!m_one.isNull() || !m_two.isNull())
-		assert("attempted to draw cards to an existing hand");
+	assert(m_one.isNull() && m_two.isNull() && "attempted to draw cards to an existing hand");
 #endif
 	m_one = one;
 	m_two = two;
